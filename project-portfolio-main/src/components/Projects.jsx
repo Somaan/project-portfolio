@@ -70,7 +70,7 @@ const Projects = () => {
       githubRepo: "https://github.com/Somaan/SecurityQuest", // Add your actual repo
       imagePlaceholders: [
         {
-          file: "securityquest-dashboard.png",
+          file: "/dashboard.png",
           description: "SecurityQuest Main Dashboard Interface",
           specific:
             "Screenshot Figure 23 from dissertation - shows welcome message, achievement notifications in top-right, progress tracking modules (Beginner/Intermediate/Advanced), and recent activity feed",
