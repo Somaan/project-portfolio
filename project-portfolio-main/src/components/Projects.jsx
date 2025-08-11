@@ -1,19 +1,27 @@
-// components/Projects.js - Projects Showcase Component
-// Features SecurityQuest and Squash Hawkeye projects with detailed information and image placeholders
+// components/Projects.js - Enhanced Projects Showcase
+// Features interactive project cards with advanced filtering and animations
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Projects = () => {
   // State for managing which project details are expanded
   const [activeProject, setActiveProject] = useState(null);
 
+  // State for technology filter
+  const [selectedTech, setSelectedTech] = useState("All");
+
+  // State for scroll animations
+  const [visibleCards, setVisibleCards] = useState(new Set());
+
   // Project data from dissertation and reports - ALL REAL DATA
   const projects = [
     {
       id: "securityquest",
-      title: "SecurityQuest - Gamified Cybersecurity Education Platform",
-      subtitle: "Full-Stack Educational Platform with AI Integration",
+      title: "SecurityQuest",
+      subtitle: "AI-Powered Cybersecurity Education Platform",
       period: "2024-2025 (Final Year Project)",
+      category: "Full-Stack Development",
+      primaryTech: "React",
       technologies: [
         "React",
         "Node.js",
@@ -24,7 +32,24 @@ const Projects = () => {
         "bcrypt",
       ],
       description:
-        "Developed a comprehensive gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalized feedback and comprehensive achievement systems.",
+        "Revolutionary gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalized feedback and comprehensive achievement systems.",
+      keyMetrics: [
+        {
+          label: "User Improvement",
+          value: "52.2%",
+          description: "Increase in cybersecurity confidence",
+        },
+        {
+          label: "Test Coverage",
+          value: "100%",
+          description: "Across 326 automated test cases",
+        },
+        {
+          label: "User Accuracy",
+          value: "100%",
+          description: "Phishing identification post-training",
+        },
+      ],
       keyAchievements: [
         "52.2% improvement in user cybersecurity confidence through testing across 6 participants",
         "100% test coverage across 326 automated test cases using Jest and React Testing Library",
@@ -41,6 +66,8 @@ const Projects = () => {
         "Multi-format quiz system: email phishing, SMS smishing, voice transcript analysis",
         "Real-time feedback generation with context-aware AI recommendations",
       ],
+      liveDemo: null, // No live demo available
+      githubRepo: "https://github.com/Somaan/SecurityQuest", // Add your actual repo
       imagePlaceholders: [
         {
           file: "securityquest-dashboard.png",
@@ -70,9 +97,11 @@ const Projects = () => {
     },
     {
       id: "squash-hawkeye",
-      title: "Squash Hawkeye - Multi-Modal Line-Calling System",
-      subtitle: "Computer Vision & Audio Processing for Sports Officiating",
+      title: "Squash Hawkeye",
+      subtitle: "Computer Vision Sports Technology",
       period: "2024 (Ubiquitous Computing Assignment)",
+      category: "Computer Vision",
+      primaryTech: "Python",
       technologies: [
         "Python",
         "OpenCV",
@@ -82,7 +111,24 @@ const Projects = () => {
         "Audio Processing",
       ],
       description:
-        "Co-developed an innovative system integrating computer vision and audio processing to provide automated line-calling for squash service violations. Created cost-effective alternative to professional systems costing £60,000-£100,000.",
+        "Innovative multi-modal system integrating computer vision and audio processing for automated sports officiating. Created cost-effective alternative to professional systems costing £60,000-£100,000.",
+      keyMetrics: [
+        {
+          label: "Accuracy Rate",
+          value: "82%",
+          description: "In challenging edge cases",
+        },
+        {
+          label: "Cost Reduction",
+          value: "99%",
+          description: "vs professional systems",
+        },
+        {
+          label: "Processing Speed",
+          value: "60fps",
+          description: "Real-time video analysis",
+        },
+      ],
       keyAchievements: [
         "82% accuracy in challenging edge cases through systematic algorithm optimization",
         "Successfully processed smartphone video data (1080p @ 60fps) with audio synchronization",
@@ -99,6 +145,8 @@ const Projects = () => {
         "Image enhancement pipeline improving contrast and brightness for better detection",
         "Decision logic implementing official squash service line rules with 1-pixel tolerance",
       ],
+      liveDemo: null, // No live demo available
+      githubRepo: "https://github.com/Somaan/SquashHawkeye", // Add your actual repo
       imagePlaceholders: [
         {
           file: "squash-hawkeye-detection.png",
@@ -128,59 +176,172 @@ const Projects = () => {
     },
   ];
 
+  // Get unique technologies for filtering
+  const allTechnologies = [
+    "All",
+    ...new Set(projects.flatMap((project) => project.technologies)),
+  ];
+
+  // Filter projects based on selected technology
+  const filteredProjects =
+    selectedTech === "All"
+      ? projects
+      : projects.filter((project) =>
+          project.technologies.includes(selectedTech)
+        );
+
+  // Scroll animation effect
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleCards((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "50px" }
+    );
+
+    const cards = document.querySelectorAll(".project-card");
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [filteredProjects]);
+
   // Toggle project details expansion
   const toggleProjectDetails = (projectId) => {
     setActiveProject(activeProject === projectId ? null : projectId);
   };
 
   return (
-    <section id="projects" className="projects-section">
+    <section id="projects" className="projects-section section">
       <div className="section-container">
         <h2 className="section-title">Featured Projects</h2>
         <p className="section-subtitle">
-          Innovative solutions combining software engineering, AI, computer
-          vision, and cybersecurity
+          Innovative solutions combining AI, computer vision, and full-stack
+          development to solve real-world problems
         </p>
 
+        {/* Technology Filter */}
+        <TechnologyFilter
+          technologies={allTechnologies}
+          selectedTech={selectedTech}
+          onTechSelect={setSelectedTech}
+        />
+
+        {/* Projects Grid */}
         <div className="projects-grid">
-          {projects.map((project) => (
+          {filteredProjects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
               isActive={activeProject === project.id}
               onToggle={toggleProjectDetails}
+              isVisible={visibleCards.has(`project-${project.id}`)}
+              animationDelay={index * 0.2}
             />
           ))}
+        </div>
+
+        {/* Call to Action */}
+        <div className="projects-cta">
+          <h3>Interested in collaborating?</h3>
+          <p>
+            I'm always excited to work on innovative projects that push the
+            boundaries of technology.
+          </p>
+          <button
+            className="btn-primary"
+            onClick={() =>
+              document
+                .getElementById("contact")
+                .scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            <i className="fas fa-rocket" aria-hidden="true"></i>
+            Let's Build Something Amazing
+          </button>
         </div>
       </div>
     </section>
   );
 };
 
-// Individual Project Card Component
-const ProjectCard = ({ project, isActive, onToggle }) => {
+// Technology Filter Component
+const TechnologyFilter = ({ technologies, selectedTech, onTechSelect }) => {
+  return (
+    <div className="tech-filter">
+      <h4 className="filter-title">
+        <i className="fas fa-filter" aria-hidden="true"></i>
+        Filter by Technology
+      </h4>
+      <div className="filter-buttons">
+        {technologies.map((tech) => (
+          <button
+            key={tech}
+            className={`filter-button ${selectedTech === tech ? "active" : ""}`}
+            onClick={() => onTechSelect(tech)}
+            aria-label={`Filter projects by ${tech}`}
+          >
+            {tech}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Enhanced Project Card Component
+const ProjectCard = ({
+  project,
+  isActive,
+  onToggle,
+  isVisible,
+  animationDelay,
+}) => {
   const handleToggle = () => {
     onToggle(project.id);
   };
 
+  const handleExternalLink = (url) => {
+    if (url) {
+      window.open(url, "_blank", "noopener noreferrer");
+    }
+  };
+
   return (
-    <div className="project-card">
+    <div
+      id={`project-${project.id}`}
+      className={`project-card glass-card ${isVisible ? "visible" : ""}`}
+      style={{ animationDelay: `${animationDelay}s` }}
+    >
       {/* Project Header */}
       <div className="project-header">
+        <div className="project-meta">
+          <span className="project-category">{project.category}</span>
+          <span className="project-period">
+            <i className="fas fa-calendar-alt" aria-hidden="true"></i>
+            {project.period}
+          </span>
+        </div>
         <h3 className="project-title">{project.title}</h3>
         <p className="project-subtitle">{project.subtitle}</p>
-        <p className="project-period">
-          <i className="fas fa-calendar-alt" aria-hidden="true"></i>
-          {project.period}
-        </p>
+      </div>
+
+      {/* Key Metrics */}
+      <div className="project-metrics">
+        {project.keyMetrics.map((metric, index) => (
+          <div key={index} className="metric-card">
+            <span className="metric-value">{metric.value}</span>
+            <span className="metric-label">{metric.label}</span>
+            <span className="metric-description">{metric.description}</span>
+          </div>
+        ))}
       </div>
 
       {/* Technology Tags */}
       <div className="project-technologies">
-        <h4 className="tech-title">
-          <i className="fas fa-code" aria-hidden="true"></i>
-          Technologies Used:
-        </h4>
         <div className="tech-tags">
           {project.technologies.map((tech, index) => (
             <span key={index} className="tech-tag">
@@ -193,30 +354,53 @@ const ProjectCard = ({ project, isActive, onToggle }) => {
       {/* Project Description */}
       <p className="project-description">{project.description}</p>
 
-      {/* Image Placeholders Section */}
-      <ImagePlaceholders imagePlaceholders={project.imagePlaceholders} />
+      {/* Action Buttons */}
+      <div className="project-actions">
+        <button
+          className="expand-button"
+          onClick={handleToggle}
+          aria-expanded={isActive}
+          aria-label={`${isActive ? "Hide" : "Show"} details for ${
+            project.title
+          }`}
+        >
+          <span>{isActive ? "Hide Details" : "Show Details"}</span>
+          <i
+            className={`fas fa-chevron-${isActive ? "up" : "down"}`}
+            aria-hidden="true"
+          ></i>
+        </button>
 
-      {/* Expand/Collapse Button */}
-      <button
-        className="expand-button"
-        onClick={handleToggle}
-        aria-expanded={isActive}
-        aria-label={`${isActive ? "Hide" : "Show"} details for ${
-          project.title
-        }`}
-      >
-        <span>{isActive ? "Hide Details" : "Show Details"}</span>
-        <i
-          className={`fas fa-chevron-${isActive ? "up" : "down"}`}
-          aria-hidden="true"
-        ></i>
-      </button>
+        <div className="external-links">
+          {project.githubRepo && (
+            <button
+              className="btn-secondary"
+              onClick={() => handleExternalLink(project.githubRepo)}
+              aria-label={`View ${project.title} on GitHub`}
+            >
+              <i className="fab fa-github" aria-hidden="true"></i>
+              View Code
+            </button>
+          )}
+          {project.liveDemo && (
+            <button
+              className="btn-primary"
+              onClick={() => handleExternalLink(project.liveDemo)}
+              aria-label={`View live demo of ${project.title}`}
+            >
+              <i className="fas fa-external-link-alt" aria-hidden="true"></i>
+              Live Demo
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Expanded Project Details */}
       {isActive && (
         <ProjectDetails
           keyAchievements={project.keyAchievements}
           technicalHighlights={project.technicalHighlights}
+          imagePlaceholders={project.imagePlaceholders}
         />
       )}
     </div>
@@ -229,7 +413,7 @@ const ImagePlaceholders = ({ imagePlaceholders }) => {
     <div className="project-images">
       <h4 className="images-title">
         <i className="fas fa-images" aria-hidden="true"></i>
-        Visual Assets Needed:
+        Visual Assets Needed
       </h4>
 
       <div className="images-grid">
@@ -238,14 +422,12 @@ const ImagePlaceholders = ({ imagePlaceholders }) => {
             <div className="placeholder-box">
               <i className="fas fa-image" aria-hidden="true"></i>
               <div className="placeholder-content">
-                <p className="placeholder-filename">
-                  <strong>File:</strong> {placeholder.file}
-                </p>
+                <p className="placeholder-filename">{placeholder.file}</p>
                 <p className="placeholder-description">
                   <strong>Description:</strong> {placeholder.description}
                 </p>
                 <p className="placeholder-specific">
-                  <strong>Specific Instructions:</strong> {placeholder.specific}
+                  <strong>Instructions:</strong> {placeholder.specific}
                 </p>
               </div>
             </div>
@@ -257,9 +439,16 @@ const ImagePlaceholders = ({ imagePlaceholders }) => {
 };
 
 // Project Details Component (Expanded Content)
-const ProjectDetails = ({ keyAchievements, technicalHighlights }) => {
+const ProjectDetails = ({
+  keyAchievements,
+  technicalHighlights,
+  imagePlaceholders,
+}) => {
   return (
     <div className="project-details">
+      {/* Image Placeholders Section */}
+      <ImagePlaceholders imagePlaceholders={imagePlaceholders} />
+
       {/* Key Achievements Section */}
       <div className="achievements-section">
         <h4 className="details-title">
@@ -277,37 +466,13 @@ const ProjectDetails = ({ keyAchievements, technicalHighlights }) => {
       <div className="technical-section">
         <h4 className="details-title">
           <i className="fas fa-cogs" aria-hidden="true"></i>
-          Technical Highlights
+          Technical Implementation
         </h4>
         <ul className="technical-list">
           {technicalHighlights.map((highlight, index) => (
             <li key={index}>{highlight}</li>
           ))}
         </ul>
-      </div>
-
-      {/* Performance Metrics (if applicable) */}
-      <div className="metrics-section">
-        <h4 className="details-title">
-          <i className="fas fa-chart-line" aria-hidden="true"></i>
-          Impact & Results
-        </h4>
-        <div className="metrics-grid">
-          <div className="metric-item">
-            <span className="metric-number">326</span>
-            <span className="metric-label">Test Cases (100% Pass Rate)</span>
-          </div>
-          <div className="metric-item">
-            <span className="metric-number">52.2%</span>
-            <span className="metric-label">
-              Improvement in Security Awareness
-            </span>
-          </div>
-          <div className="metric-item">
-            <span className="metric-number">82%</span>
-            <span className="metric-label">Accuracy in Edge Cases</span>
-          </div>
-        </div>
       </div>
     </div>
   );

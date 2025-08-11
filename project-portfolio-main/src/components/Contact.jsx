@@ -1,10 +1,10 @@
-// components/Contact.js - Contact Section Component
-// Professional contact information and current availability status
+// components/Contact.js - Streamlined Contact Section
+// Focused on professional contact and current availability for project showcase
 
 import React from "react";
 
 const Contact = () => {
-  // Contact information from CV
+  // Contact information from CV - streamlined for project portfolio
   const contactInfo = [
     {
       id: "email",
@@ -13,14 +13,7 @@ const Contact = () => {
       value: "somaanm02@gmail.com",
       link: "mailto:somaanm02@gmail.com",
       type: "email",
-    },
-    {
-      id: "phone",
-      icon: "fas fa-phone",
-      title: "Phone",
-      value: "+44 7443 875073",
-      link: "tel:+447443875073",
-      type: "phone",
+      description: "Best way to reach me",
     },
     {
       id: "github",
@@ -29,6 +22,16 @@ const Contact = () => {
       value: "github.com/Somaan",
       link: "https://github.com/Somaan",
       type: "external",
+      description: "View my code repositories",
+    },
+    {
+      id: "linkedin",
+      icon: "fab fa-linkedin",
+      title: "LinkedIn",
+      value: "Connect with me",
+      link: "https://linkedin.com/in/somaan-mirza", // Add your actual LinkedIn
+      type: "external",
+      description: "Professional networking",
     },
     {
       id: "location",
@@ -37,6 +40,7 @@ const Contact = () => {
       value: "London, United Kingdom",
       link: null,
       type: "info",
+      description: "Available for remote & on-site work",
     },
   ];
 
@@ -51,171 +55,146 @@ const Contact = () => {
     }
   };
 
+  // Download CV function
+  const handleDownloadCV = () => {
+    // Create a link element and trigger download
+    const link = document.createElement("a");
+    link.href = "/documents/Somaan_Mirza_CV.pdf"; // Add your CV to public/documents/
+    link.download = "Somaan_Mirza_CV.pdf";
+    link.click();
+  };
+
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="contact-section section">
       <div className="section-container">
-        <h2 className="section-title">Get In Touch</h2>
+        <h2 className="section-title">Let's Connect</h2>
         <p className="section-subtitle">
-          Let's discuss opportunities in software engineering, cybersecurity, AI
-          development, or innovative technology solutions
+          Ready to collaborate on innovative projects or discuss exciting
+          opportunities
         </p>
 
         <div className="contact-content">
-          {/* Contact Information Grid */}
-          <ContactInfoGrid
-            contactInfo={contactInfo}
-            onContactClick={handleContactClick}
-          />
+          {/* Quick Contact Grid */}
+          <div className="contact-grid">
+            {contactInfo.map((contact) => (
+              <ContactCard
+                key={contact.id}
+                contact={contact}
+                onContactClick={handleContactClick}
+              />
+            ))}
+          </div>
 
           {/* Current Status & Availability */}
-          <CurrentStatus />
+          <div className="availability-section">
+            <div className="availability-card glass-card">
+              <div className="availability-header">
+                <div className="status-indicator active"></div>
+                <h3>Available for New Projects</h3>
+              </div>
 
-          {/* Professional Interests */}
-          <ProfessionalInterests />
+              <div className="availability-content">
+                <p className="availability-description">
+                  Currently pursuing MSc Advanced Computer Science at Queen Mary
+                  University of London. Open to exciting opportunities in
+                  software development, AI integration, and innovative
+                  technology solutions.
+                </p>
+
+                <div className="availability-tags">
+                  <span className="availability-tag">Software Engineering</span>
+                  <span className="availability-tag">AI Development</span>
+                  <span className="availability-tag">Computer Vision</span>
+                  <span className="availability-tag">
+                    Full-Stack Development
+                  </span>
+                  <span className="availability-tag">System Architecture</span>
+                </div>
+
+                <div className="availability-actions">
+                  <button
+                    className="btn-primary"
+                    onClick={() =>
+                      handleContactClick("mailto:somaanm02@gmail.com", "email")
+                    }
+                  >
+                    <i className="fas fa-paper-plane" aria-hidden="true"></i>
+                    Get In Touch
+                  </button>
+
+                  <button className="btn-secondary" onClick={handleDownloadCV}>
+                    <i className="fas fa-download" aria-hidden="true"></i>
+                    Download CV
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Bio */}
+          <div className="bio-section">
+            <div className="bio-card glass-card">
+              <h3>About Me</h3>
+              <p>
+                I'm a passionate software engineer with expertise in building
+                secure, scalable systems that solve real-world problems. My work
+                spans AI-powered educational platforms, computer vision
+                applications, and full-stack web development. I believe in
+                creating technology that makes a measurable impact.
+              </p>
+
+              <div className="bio-highlights">
+                <div className="highlight-item">
+                  <i className="fas fa-graduation-cap" aria-hidden="true"></i>
+                  <span>MSc Advanced Computer Science (In Progress)</span>
+                </div>
+                <div className="highlight-item">
+                  <i className="fas fa-trophy" aria-hidden="true"></i>
+                  <span>BSc Business Information Systems (2:1)</span>
+                </div>
+                <div className="highlight-item">
+                  <i className="fas fa-users" aria-hidden="true"></i>
+                  <span>Squash Club President & Team Leader</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-// Contact Information Grid Component
-const ContactInfoGrid = ({ contactInfo, onContactClick }) => {
+// Individual Contact Card Component
+const ContactCard = ({ contact, onContactClick }) => {
+  const handleClick = () => {
+    onContactClick(contact.link, contact.type);
+  };
+
   return (
-    <div className="contact-info">
-      <h3 className="contact-section-title">
-        <i className="fas fa-address-card" aria-hidden="true"></i>
-        Contact Information
-      </h3>
-
-      <div className="contact-grid">
-        {contactInfo.map((contact) => (
-          <div key={contact.id} className="contact-item">
-            <div className="contact-icon">
-              <i className={contact.icon} aria-hidden="true"></i>
-            </div>
-
-            <div className="contact-details">
-              <h4 className="contact-title">{contact.title}</h4>
-
-              {contact.link ? (
-                <button
-                  className="contact-link"
-                  onClick={() => onContactClick(contact.link, contact.type)}
-                  aria-label={`Contact via ${contact.title}: ${contact.value}`}
-                >
-                  {contact.value}
-                  {contact.type === "external" && (
-                    <i
-                      className="fas fa-external-link-alt"
-                      aria-hidden="true"
-                    ></i>
-                  )}
-                </button>
-              ) : (
-                <p className="contact-text">{contact.value}</p>
-              )}
-            </div>
-          </div>
-        ))}
+    <div className="contact-card glass-card">
+      <div className="contact-card-icon">
+        <i className={contact.icon} aria-hidden="true"></i>
       </div>
-    </div>
-  );
-};
 
-// Current Status Component
-const CurrentStatus = () => {
-  return (
-    <div className="current-status">
-      <h3 className="contact-section-title">
-        <i className="fas fa-info-circle" aria-hidden="true"></i>
-        Current Status
-      </h3>
+      <div className="contact-card-content">
+        <h4 className="contact-card-title">{contact.title}</h4>
+        <p className="contact-card-description">{contact.description}</p>
 
-      <div className="status-content">
-        <div className="status-item">
-          <div className="status-indicator active"></div>
-          <div className="status-details">
-            <h4 className="status-title">Available for Opportunities</h4>
-            <p className="status-description">
-              Currently pursuing MSc Advanced Computer Science at Queen Mary
-              University of London (2025-2026) and actively seeking
-              opportunities in:
-            </p>
-
-            <div className="opportunity-tags">
-              <span className="opportunity-tag">Software Engineering</span>
-              <span className="opportunity-tag">Cybersecurity</span>
-              <span className="opportunity-tag">AI Development</span>
-              <span className="opportunity-tag">Full-Stack Development</span>
-              <span className="opportunity-tag">System Architecture</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="status-item">
-          <div className="status-indicator education"></div>
-          <div className="status-details">
-            <h4 className="status-title">Academic Pursuits</h4>
-            <p className="status-description">
-              Specializing in Software & Data Engineering with focus on Machine
-              Learning, Security & Authentication, and advanced system design
-              patterns.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Professional Interests Component
-const ProfessionalInterests = () => {
-  const interests = [
-    {
-      icon: "fas fa-shield-alt",
-      title: "Cybersecurity",
-      description:
-        "Social engineering defense, secure authentication systems, and gamified security education",
-    },
-    {
-      icon: "fas fa-robot",
-      title: "AI Integration",
-      description:
-        "Local LLM implementation, personalized learning systems, and AI-powered feedback mechanisms",
-    },
-    {
-      icon: "fas fa-eye",
-      title: "Computer Vision",
-      description:
-        "Multi-modal processing, real-time detection systems, and sports technology applications",
-    },
-    {
-      icon: "fas fa-server",
-      title: "System Architecture",
-      description:
-        "Three-tier design patterns, scalable database systems, and full-stack development",
-    },
-  ];
-
-  return (
-    <div className="professional-interests">
-      <h3 className="contact-section-title">
-        <i className="fas fa-lightbulb" aria-hidden="true"></i>
-        Areas of Interest
-      </h3>
-
-      <div className="interests-grid">
-        {interests.map((interest, index) => (
-          <div key={index} className="interest-item">
-            <div className="interest-icon">
-              <i className={interest.icon} aria-hidden="true"></i>
-            </div>
-            <div className="interest-content">
-              <h4 className="interest-title">{interest.title}</h4>
-              <p className="interest-description">{interest.description}</p>
-            </div>
-          </div>
-        ))}
+        {contact.link ? (
+          <button
+            className="contact-card-link"
+            onClick={handleClick}
+            aria-label={`Contact via ${contact.title}: ${contact.value}`}
+          >
+            {contact.value}
+            {contact.type === "external" && (
+              <i className="fas fa-external-link-alt" aria-hidden="true"></i>
+            )}
+          </button>
+        ) : (
+          <span className="contact-card-value">{contact.value}</span>
+        )}
       </div>
     </div>
   );

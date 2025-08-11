@@ -1,5 +1,5 @@
-// components/Navigation.js - Navigation Bar Component
-// Handles the top navigation with smooth scrolling and mobile responsiveness
+// components/Navigation.js - Modern Navigation with Dark/Light Mode Toggle
+// Handles navigation with glassmorphism design and theme switching
 
 import React from "react";
 
@@ -12,7 +12,6 @@ const Navigation = ({
   // Navigation items configuration
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "about", label: "About" },
     { id: "projects", label: "Projects" },
     { id: "contact", label: "Contact" },
   ];
@@ -27,30 +26,63 @@ const Navigation = ({
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Theme toggle functionality
+  const toggleTheme = () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  // Set initial theme on component mount
+  React.useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
+
+    document.documentElement.setAttribute("data-theme", initialTheme);
+  }, []);
+
   return (
     <nav className="navbar">
       <div className="nav-container">
         {/* Logo/Brand */}
         <div className="nav-logo">
-          <h2>Somaan Mirza</h2>
+          <h2 onClick={() => handleNavClick("home")}>Somaan Mirza</h2>
         </div>
 
-        {/* Navigation Menu */}
-        <ul className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
-          {navItems.map((item) => (
-            <li key={item.id} className="nav-item">
-              <button
-                className={`nav-link ${
-                  activeSection === item.id ? "active" : ""
-                }`}
-                onClick={() => handleNavClick(item.id)}
-                aria-label={`Navigate to ${item.label} section`}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
+        {/* Navigation Content */}
+        <div className="nav-content">
+          {/* Navigation Menu */}
+          <ul className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
+            {navItems.map((item) => (
+              <li key={item.id} className="nav-item">
+                <button
+                  className={`nav-link ${
+                    activeSection === item.id ? "active" : ""
+                  }`}
+                  onClick={() => handleNavClick(item.id)}
+                  aria-label={`Navigate to ${item.label} section`}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {/* Theme Toggle Button */}
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle dark/light mode"
+            title="Toggle Theme"
+          >
+            <i className="fas fa-moon" aria-hidden="true"></i>
+          </button>
+        </div>
 
         {/* Mobile Menu Toggle (Hamburger) */}
         <div
