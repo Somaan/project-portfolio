@@ -1,5 +1,5 @@
-// components/Hero.js - Hero/Landing Section Component
-// Main introduction section with call-to-action buttons
+// components/Hero.js - Modern Hero Section with Project Focus
+// Features animated elements and project showcase introduction
 
 import React from "react";
 
@@ -13,22 +13,34 @@ const Hero = ({ scrollToSection }) => {
     scrollToSection("contact");
   };
 
+  // Download CV function
+  const handleDownloadCV = () => {
+    // Create a link element and trigger download
+    const link = document.createElement("a");
+    link.href = "/documents/Somaan_Mirza_CV.pdf"; // Add your CV to public/documents/
+    link.download = "Somaan_Mirza_CV.pdf";
+    link.click();
+  };
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
         {/* Hero Content */}
         <div className="hero-content">
-          <h1 className="hero-title">Software Engineer & Systems Developer</h1>
+          {/* Status Badge */}
+          <div className="hero-badge">Available for opportunities</div>
+
+          <h1 className="hero-title">Building Innovative Software Solutions</h1>
 
           <p className="hero-subtitle">
-            MSc Advanced Computer Science Student specializing in Software &
-            Data Engineering
+            Experienced in Full-Stack Development, AI Integration & Computer
+            Vision
           </p>
 
           <p className="hero-description">
-            Passionate about building secure, scalable systems with expertise in
-            full-stack development, cybersecurity, and AI integration. Currently
-            pursuing advanced studies at Queen Mary University of London.
+            I create cutting-edge applications that solve real-world problems.
+            From AI-powered cybersecurity education platforms to computer vision
+            sports technology - I build systems that make a measurable impact.
           </p>
 
           {/* Call-to-Action Buttons */}
@@ -38,43 +50,70 @@ const Hero = ({ scrollToSection }) => {
               onClick={handleViewProjects}
               aria-label="View my projects"
             >
-              <i className="fas fa-code" aria-hidden="true"></i>
-              View Projects
+              <i className="fas fa-rocket" aria-hidden="true"></i>
+              Explore My Work
             </button>
 
             <button
               className="btn-secondary"
-              onClick={handleGetInTouch}
-              aria-label="Get in touch with me"
+              onClick={handleDownloadCV}
+              aria-label="Download my CV"
             >
-              <i className="fas fa-envelope" aria-hidden="true"></i>
-              Get In Touch
+              <i className="fas fa-download" aria-hidden="true"></i>
+              Download CV
             </button>
           </div>
         </div>
 
-        {/* Hero Image/Photo */}
-        <div className="hero-image">
-          {/* PLACEHOLDER: Add professional headshot photo here */}
-          {/* 
-            INSTRUCTIONS FOR IMAGE:
-            - Take a professional headshot photo
-            - Clean background (white/neutral preferred)
-            - Professional attire (business casual or formal)
-            - Good lighting with clear facial features
-            - High resolution (at least 600x600px)
-            - Square crop preferred for circular styling
-            - Save as hero-photo.jpg in public/images/ folder
-            - Replace this placeholder div with: <img src="/images/hero-photo.jpg" alt="Somaan Mirza" className="hero-photo" />
-          */}
-          <div className="placeholder-image">
-            <i className="fas fa-user" aria-hidden="true"></i>
-            <p className="placeholder-text">Professional Photo</p>
-            <p className="placeholder-note">
-              Add your professional headshot here
-            </p>
+        {/* Interactive Demo Window */}
+        <div className="hero-demo">
+          <div className="demo-window">
+            {/* Demo Window Header */}
+            <div className="demo-header">
+              <div className="demo-dots">
+                <div className="demo-dot"></div>
+                <div className="demo-dot"></div>
+                <div className="demo-dot"></div>
+              </div>
+            </div>
+
+            {/* Demo Content */}
+            <div className="demo-content">
+              <div className="demo-icon">
+                <i className="fas fa-code" aria-hidden="true"></i>
+              </div>
+              <h3>Project Showcase</h3>
+              <p className="demo-text">
+                Explore interactive demonstrations of SecurityQuest and Squash
+                Hawkeye
+              </p>
+
+              {/* Quick Stats */}
+              <div className="quick-stats">
+                <div className="stat-item">
+                  <span className="stat-number">2</span>
+                  <span className="stat-label">Major Projects</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">82%</span>
+                  <span className="stat-label">Accuracy Achieved</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">326</span>
+                  <span className="stat-label">Tests Passed</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="scroll-indicator" onClick={handleViewProjects}>
+        <div className="scroll-arrow">
+          <i className="fas fa-chevron-down" aria-hidden="true"></i>
+        </div>
+        <span>Scroll to explore</span>
       </div>
     </section>
   );

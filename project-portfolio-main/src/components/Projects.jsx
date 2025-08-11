@@ -1,14 +1,12 @@
-// components/Projects.js - Enhanced Projects Showcase
-// Features interactive project cards with advanced filtering and animations
+// components/Projects.js - Enhanced Projects Showcase with Modal Details
+// Features clean project cards with modal popups for detailed information
 
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Projects = () => {
-  // State for managing which project details are expanded
-  const [activeProject, setActiveProject] = useState(null);
-
-  // State for technology filter
-  const [selectedTech, setSelectedTech] = useState("All");
+  // State for managing which project modal is open
+  const [activeModal, setActiveModal] = useState(null);
 
   // State for scroll animations
   const [visibleCards, setVisibleCards] = useState(new Set());
@@ -66,32 +64,32 @@ const Projects = () => {
         "Multi-format quiz system: email phishing, SMS smishing, voice transcript analysis",
         "Real-time feedback generation with context-aware AI recommendations",
       ],
-      liveDemo: null, // No live demo available
-      githubRepo: "https://github.com/Somaan/SecurityQuest", // Add your actual repo
-      imagePlaceholders: [
+      liveDemo: null,
+      githubRepo: "https://github.com/Somaan/SecurityQuest",
+      images: [
         {
-          file: "/dashboard.png",
-          description: "SecurityQuest Main Dashboard Interface",
-          specific:
-            "Screenshot Figure 23 from dissertation - shows welcome message, achievement notifications in top-right, progress tracking modules (Beginner/Intermediate/Advanced), and recent activity feed",
+          src: "/images/dashboard.png",
+          alt: "SecurityQuest Main Dashboard Interface",
+          caption:
+            "Main dashboard showing progress tracking, achievement notifications, and learning modules",
         },
         {
-          file: "securityquest-architecture.png",
-          description: "System Architecture Diagram",
-          specific:
-            "Use Figure 2 from dissertation - PERN Stack with LLM Integration showing client-side React, server-side Node.js/Express, PostgreSQL database, and Ollama LLM layer",
+          src: "/images/system architecture.png",
+          alt: "System Architecture - SecurityQuest (PERN Stack with LLM Integration)",
+          caption:
+            "Three-tier system architecture showing client-side React, server-side Node.js/Express, and PostgreSQL database with Ollama LLM layer",
         },
         {
-          file: "securityquest-results.png",
-          description: "User Testing Results Chart",
-          specific:
-            "Screenshot Figure 75 from dissertation - Pre vs Post-Intervention Security Knowledge bar chart showing 52.2% average improvement across all categories",
+          src: "/images/email phishing.png",
+          alt: "Email Phishing Quiz Interface",
+          caption:
+            "Interactive phishing identification with clickable suspicious elements",
         },
         {
-          file: "securityquest-quiz.png",
-          description: "Interactive Quiz Interface",
-          specific:
-            'Screenshot Figure 48 from dissertation - shows phishing email identification with clickable suspicious elements and "Beginner Quiz" interface',
+          src: "/images/pre vs post.png",
+          alt: "Pre vs Post-Intervention Security Knowledge Results",
+          caption:
+            "User testing results showing 52.2% average improvement in cybersecurity confidence across all measured categories",
         },
       ],
     },
@@ -145,50 +143,24 @@ const Projects = () => {
         "Image enhancement pipeline improving contrast and brightness for better detection",
         "Decision logic implementing official squash service line rules with 1-pixel tolerance",
       ],
-      liveDemo: null, // No live demo available
-      githubRepo: "https://github.com/Somaan/SquashHawkeye", // Add your actual repo
-      imagePlaceholders: [
+      liveDemo: null,
+      githubRepo: "https://github.com/Somaan/SquashHawkeye",
+      images: [
         {
-          file: "squash-hawkeye-detection.png",
-          description: "Ball Detection and Line Calling",
-          specific:
-            'Screenshot Figure 10 from Squash Hawkeye report - shows green circle around detected squash ball, red service line, and "IN" or "OUT" decision display',
+          src: "/images/squash-detection.png",
+          alt: "Ball Detection and Line Calling",
+          caption:
+            "Green circle around detected squash ball with red service line and IN/OUT decision",
         },
         {
-          file: "squash-hawkeye-impact.png",
-          description: "Impact Detection Example",
-          specific:
-            "Use Figure 4 from report - example impact screenshot showing ball position relative to service line during serve",
-        },
-        {
-          file: "squash-hawkeye-setup.png",
-          description: "Recording Setup and System",
-          specific:
-            "Screenshot Figure 5 from report - smartphone recording setup positioned on tripod with clear view of service box and front wall",
-        },
-        {
-          file: "squash-hawkeye-output.png",
-          description: "System Output Examples",
-          specific:
-            "Use multiple images from Figure 10 showing different edge cases - balls just above line (IN), balls crossing line (OUT), various challenging positions",
+          src: "/images/squash-setup.png",
+          alt: "Recording Setup and System",
+          caption:
+            "Smartphone recording setup positioned on tripod with clear view of service box",
         },
       ],
     },
   ];
-
-  // Get unique technologies for filtering
-  const allTechnologies = [
-    "All",
-    ...new Set(projects.flatMap((project) => project.technologies)),
-  ];
-
-  // Filter projects based on selected technology
-  const filteredProjects =
-    selectedTech === "All"
-      ? projects
-      : projects.filter((project) =>
-          project.technologies.includes(selectedTech)
-        );
 
   // Scroll animation effect
   useEffect(() => {
@@ -207,12 +179,35 @@ const Projects = () => {
     cards.forEach((card) => observer.observe(card));
 
     return () => observer.disconnect();
-  }, [filteredProjects]);
+  }, []);
 
-  // Toggle project details expansion
-  const toggleProjectDetails = (projectId) => {
-    setActiveProject(activeProject === projectId ? null : projectId);
+  // Modal functions
+  const openModal = (projectId) => {
+    setActiveModal(projectId);
+    document.body.style.overflow = "hidden"; // Prevent background scrolling
   };
+
+  const closeModal = () => {
+    setActiveModal(null);
+    document.body.style.overflow = "unset"; // Restore scrolling
+  };
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    if (activeModal) {
+      document.addEventListener("keydown", handleEscape);
+    }
+
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [activeModal]);
+
+  const activeProject = projects.find((p) => p.id === activeModal);
 
   return (
     <section id="projects" className="projects-section section">
@@ -223,21 +218,13 @@ const Projects = () => {
           development to solve real-world problems
         </p>
 
-        {/* Technology Filter */}
-        <TechnologyFilter
-          technologies={allTechnologies}
-          selectedTech={selectedTech}
-          onTechSelect={setSelectedTech}
-        />
-
         {/* Projects Grid */}
         <div className="projects-grid">
-          {filteredProjects.map((project, index) => (
+          {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
-              isActive={activeProject === project.id}
-              onToggle={toggleProjectDetails}
+              onOpenModal={openModal}
               isVisible={visibleCards.has(`project-${project.id}`)}
               animationDelay={index * 0.2}
             />
@@ -259,51 +246,22 @@ const Projects = () => {
                 .scrollIntoView({ behavior: "smooth" })
             }
           >
-            <i className="fas fa-rocket" aria-hidden="true"></i>
+            <FontAwesomeIcon icon="rocket" />
             Let's Build Something Amazing
           </button>
         </div>
       </div>
+
+      {/* Project Details Modal */}
+      {activeModal && activeProject && (
+        <ProjectModal project={activeProject} onClose={closeModal} />
+      )}
     </section>
   );
 };
 
-// Technology Filter Component
-const TechnologyFilter = ({ technologies, selectedTech, onTechSelect }) => {
-  return (
-    <div className="tech-filter">
-      <h4 className="filter-title">
-        <i className="fas fa-filter" aria-hidden="true"></i>
-        Filter by Technology
-      </h4>
-      <div className="filter-buttons">
-        {technologies.map((tech) => (
-          <button
-            key={tech}
-            className={`filter-button ${selectedTech === tech ? "active" : ""}`}
-            onClick={() => onTechSelect(tech)}
-            aria-label={`Filter projects by ${tech}`}
-          >
-            {tech}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Enhanced Project Card Component
-const ProjectCard = ({
-  project,
-  isActive,
-  onToggle,
-  isVisible,
-  animationDelay,
-}) => {
-  const handleToggle = () => {
-    onToggle(project.id);
-  };
-
+// Enhanced Project Card Component (Compact Version)
+const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
   const handleExternalLink = (url) => {
     if (url) {
       window.open(url, "_blank", "noopener noreferrer");
@@ -321,7 +279,7 @@ const ProjectCard = ({
         <div className="project-meta">
           <span className="project-category">{project.category}</span>
           <span className="project-period">
-            <i className="fas fa-calendar-alt" aria-hidden="true"></i>
+            <FontAwesomeIcon icon="calendar-alt" />
             {project.period}
           </span>
         </div>
@@ -357,122 +315,190 @@ const ProjectCard = ({
       {/* Action Buttons */}
       <div className="project-actions">
         <button
-          className="expand-button"
-          onClick={handleToggle}
-          aria-expanded={isActive}
-          aria-label={`${isActive ? "Hide" : "Show"} details for ${
-            project.title
-          }`}
+          className="details-button"
+          onClick={() => onOpenModal(project.id)}
+          aria-label={`View detailed information about ${project.title}`}
         >
-          <span>{isActive ? "Hide Details" : "Show Details"}</span>
-          <i
-            className={`fas fa-chevron-${isActive ? "up" : "down"}`}
-            aria-hidden="true"
-          ></i>
+          <span>View Project Details</span>
+          <FontAwesomeIcon icon="arrow-right" />
         </button>
 
         <div className="external-links">
           {project.githubRepo && (
             <button
-              className="btn-secondary"
+              className="btn-secondary btn-github"
               onClick={() => handleExternalLink(project.githubRepo)}
               aria-label={`View ${project.title} on GitHub`}
             >
-              <i className="fab fa-github" aria-hidden="true"></i>
+              <FontAwesomeIcon icon={["fab", "github"]} />
               View Code
             </button>
           )}
           {project.liveDemo && (
             <button
-              className="btn-primary"
+              className="btn-primary btn-demo"
               onClick={() => handleExternalLink(project.liveDemo)}
               aria-label={`View live demo of ${project.title}`}
             >
-              <i className="fas fa-external-link-alt" aria-hidden="true"></i>
+              <FontAwesomeIcon icon="external-link-alt" />
               Live Demo
             </button>
           )}
         </div>
       </div>
-
-      {/* Expanded Project Details */}
-      {isActive && (
-        <ProjectDetails
-          keyAchievements={project.keyAchievements}
-          technicalHighlights={project.technicalHighlights}
-          imagePlaceholders={project.imagePlaceholders}
-        />
-      )}
     </div>
   );
 };
 
-// Image Placeholders Component
-const ImagePlaceholders = ({ imagePlaceholders }) => {
-  return (
-    <div className="project-images">
-      <h4 className="images-title">
-        <i className="fas fa-images" aria-hidden="true"></i>
-        Visual Assets Needed
-      </h4>
+// Project Modal Component
+const ProjectModal = ({ project, onClose }) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-      <div className="images-grid">
-        {imagePlaceholders.map((placeholder, index) => (
-          <div key={index} className="image-placeholder">
-            <div className="placeholder-box">
-              <i className="fas fa-image" aria-hidden="true"></i>
-              <div className="placeholder-content">
-                <p className="placeholder-filename">{placeholder.file}</p>
-                <p className="placeholder-description">
-                  <strong>Description:</strong> {placeholder.description}
-                </p>
-                <p className="placeholder-specific">
-                  <strong>Instructions:</strong> {placeholder.specific}
-                </p>
-              </div>
+  const nextImage = () => {
+    setSelectedImageIndex((prev) =>
+      prev === project.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) =>
+      prev === 0 ? project.images.length - 1 : prev - 1
+    );
+  };
+
+  const handleExternalLink = (url) => {
+    if (url) {
+      window.open(url, "_blank", "noopener noreferrer");
+    }
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Modal Header */}
+        <div className="modal-header">
+          <div className="modal-title-section">
+            <h2 className="modal-title">{project.title}</h2>
+            <p className="modal-subtitle">{project.subtitle}</p>
+            <div className="modal-meta">
+              <span className="modal-category">{project.category}</span>
+              <span className="modal-period">{project.period}</span>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+          <button
+            className="modal-close"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            <FontAwesomeIcon icon="times" />
+          </button>
+        </div>
 
-// Project Details Component (Expanded Content)
-const ProjectDetails = ({
-  keyAchievements,
-  technicalHighlights,
-  imagePlaceholders,
-}) => {
-  return (
-    <div className="project-details">
-      {/* Image Placeholders Section */}
-      <ImagePlaceholders imagePlaceholders={imagePlaceholders} />
+        {/* Modal Body */}
+        <div className="modal-body">
+          {/* Image Gallery Section */}
+          {project.images && project.images.length > 0 && (
+            <div className="modal-gallery">
+              <div className="gallery-main">
+                <div className="main-image-container">
+                  <img
+                    src={project.images[selectedImageIndex].src}
+                    alt={project.images[selectedImageIndex].alt}
+                    className="main-image"
+                  />
+                  {project.images.length > 1 && (
+                    <>
+                      <button
+                        className="gallery-nav gallery-prev"
+                        onClick={prevImage}
+                      >
+                        <FontAwesomeIcon icon="chevron-left" />
+                      </button>
+                      <button
+                        className="gallery-nav gallery-next"
+                        onClick={nextImage}
+                      >
+                        <FontAwesomeIcon icon="chevron-right" />
+                      </button>
+                    </>
+                  )}
+                </div>
+                <p className="image-caption">
+                  {project.images[selectedImageIndex].caption}
+                </p>
+              </div>
 
-      {/* Key Achievements Section */}
-      <div className="achievements-section">
-        <h4 className="details-title">
-          <i className="fas fa-trophy" aria-hidden="true"></i>
-          Key Achievements
-        </h4>
-        <ul className="achievements-list">
-          {keyAchievements.map((achievement, index) => (
-            <li key={index}>{achievement}</li>
-          ))}
-        </ul>
-      </div>
+              {project.images.length > 1 && (
+                <div className="gallery-thumbnails">
+                  {project.images.map((image, index) => (
+                    <button
+                      key={index}
+                      className={`thumbnail ${
+                        index === selectedImageIndex ? "active" : ""
+                      }`}
+                      onClick={() => setSelectedImageIndex(index)}
+                    >
+                      <img src={image.src} alt={image.alt} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
-      {/* Technical Highlights Section */}
-      <div className="technical-section">
-        <h4 className="details-title">
-          <i className="fas fa-cogs" aria-hidden="true"></i>
-          Technical Implementation
-        </h4>
-        <ul className="technical-list">
-          {technicalHighlights.map((highlight, index) => (
-            <li key={index}>{highlight}</li>
-          ))}
-        </ul>
+          {/* Content Sections */}
+          <div className="modal-sections">
+            {/* Key Achievements */}
+            <div className="modal-section">
+              <h3 className="section-title">
+                <i className="fas fa-trophy" aria-hidden="true"></i>
+                Key Achievements
+              </h3>
+              <ul className="achievements-list">
+                {project.keyAchievements.map((achievement, index) => (
+                  <li key={index}>{achievement}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Technical Implementation */}
+            <div className="modal-section">
+              <h3 className="section-title">
+                <i className="fas fa-cogs" aria-hidden="true"></i>
+                Technical Implementation
+              </h3>
+              <ul className="technical-list">
+                {project.technicalHighlights.map((highlight, index) => (
+                  <li key={index}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal Footer */}
+        <div className="modal-footer">
+          <div className="modal-actions">
+            {project.githubRepo && (
+              <button
+                className="btn-github"
+                onClick={() => handleExternalLink(project.githubRepo)}
+              >
+                <i className="fab fa-github" aria-hidden="true"></i>
+                View on GitHub
+              </button>
+            )}
+            {project.liveDemo && (
+              <button
+                className="btn-demo"
+                onClick={() => handleExternalLink(project.liveDemo)}
+              >
+                <i className="fas fa-external-link-alt" aria-hidden="true"></i>
+                Live Demo
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

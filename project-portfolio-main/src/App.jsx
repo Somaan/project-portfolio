@@ -2,6 +2,34 @@
 // Modern project showcase portfolio with dark/light mode support
 
 import React, { useState, useEffect } from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCalendarAlt,
+  faArrowRight,
+  faExternalLinkAlt,
+  faTimes,
+  faChevronLeft,
+  faChevronRight,
+  faRocket,
+  faTrophy,
+  faCogs,
+  faSearchPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+
+library.add(
+  faCalendarAlt,
+  faArrowRight,
+  faExternalLinkAlt,
+  faTimes,
+  faChevronLeft,
+  faChevronRight,
+  faRocket,
+  faTrophy,
+  faCogs,
+  faGithub,
+  faSearchPlus
+);
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
