@@ -1,46 +1,62 @@
-// components/Contact.js - Streamlined Contact Section
-// Focused on professional contact and current availability for project showcase
+// components/Contact.js - Updated with proper FontAwesome icons
+// Professional contact section with working FontAwesome icon integration
 
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faMapMarkerAlt,
+  faDownload,
+  faPaperPlane,
+  faGraduationCap,
+  faTrophy,
+  faUsers,
+  faExternalLinkAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 
 const Contact = () => {
-  // Contact information from CV - streamlined for project portfolio
+  // Contact information - updated with proper FontAwesome icon references
   const contactInfo = [
     {
       id: "email",
-      icon: "fas fa-envelope",
+      icon: faEnvelope,
       title: "Email",
       value: "somaanm02@gmail.com",
       link: "mailto:somaanm02@gmail.com",
       type: "email",
       description: "Best way to reach me",
+      showExternalIcon: true,
     },
     {
       id: "github",
-      icon: "fab fa-github",
+      icon: faGithub,
       title: "GitHub",
       value: "github.com/Somaan",
       link: "https://github.com/Somaan",
       type: "external",
       description: "View my code repositories",
+      showExternalIcon: true,
     },
     {
       id: "linkedin",
-      icon: "fab fa-linkedin",
+      icon: faLinkedin,
       title: "LinkedIn",
       value: "Connect with me",
-      link: "https://linkedin.com/in/somaan-mirza", // Add your actual LinkedIn
+      link: "https://linkedin.com/in/somaan-mirza",
       type: "external",
       description: "Professional networking",
+      showExternalIcon: true,
     },
     {
       id: "location",
-      icon: "fas fa-map-marker-alt",
+      icon: faMapMarkerAlt,
       title: "Location",
       value: "London, United Kingdom",
       link: null,
       type: "info",
       description: "Available for remote & on-site work",
+      showExternalIcon: false,
     },
   ];
 
@@ -74,64 +90,7 @@ const Contact = () => {
         </p>
 
         <div className="contact-content">
-          {/* Quick Contact Grid */}
-          <div className="contact-grid">
-            {contactInfo.map((contact) => (
-              <ContactCard
-                key={contact.id}
-                contact={contact}
-                onContactClick={handleContactClick}
-              />
-            ))}
-          </div>
-
-          {/* Current Status & Availability */}
-          <div className="availability-section">
-            <div className="availability-card glass-card">
-              <div className="availability-header">
-                <div className="status-indicator active"></div>
-                <h3>Available for New Projects</h3>
-              </div>
-
-              <div className="availability-content">
-                <p className="availability-description">
-                  Currently pursuing MSc Advanced Computer Science at Queen Mary
-                  University of London. Open to exciting opportunities in
-                  software development, AI integration, and innovative
-                  technology solutions.
-                </p>
-
-                <div className="availability-tags">
-                  <span className="availability-tag">Software Engineering</span>
-                  <span className="availability-tag">AI Development</span>
-                  <span className="availability-tag">Computer Vision</span>
-                  <span className="availability-tag">
-                    Full-Stack Development
-                  </span>
-                  <span className="availability-tag">System Architecture</span>
-                </div>
-
-                <div className="availability-actions">
-                  <button
-                    className="btn-primary"
-                    onClick={() =>
-                      handleContactClick("mailto:somaanm02@gmail.com", "email")
-                    }
-                  >
-                    <i className="fas fa-paper-plane" aria-hidden="true"></i>
-                    Get In Touch
-                  </button>
-
-                  <button className="btn-secondary" onClick={handleDownloadCV}>
-                    <i className="fas fa-download" aria-hidden="true"></i>
-                    Download CV
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Bio */}
+          {/* About Me Section - Now First */}
           <div className="bio-section">
             <div className="bio-card glass-card">
               <h3>About Me</h3>
@@ -145,19 +104,48 @@ const Contact = () => {
 
               <div className="bio-highlights">
                 <div className="highlight-item">
-                  <i className="fas fa-graduation-cap" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faGraduationCap} />
                   <span>MSc Advanced Computer Science (In Progress)</span>
                 </div>
                 <div className="highlight-item">
-                  <i className="fas fa-trophy" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faTrophy} />
                   <span>BSc Business Information Systems (2:1)</span>
                 </div>
                 <div className="highlight-item">
-                  <i className="fas fa-users" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faUsers} />
                   <span>Squash Club President & Team Leader</span>
                 </div>
               </div>
+
+              {/* Action Buttons */}
+              <div className="bio-actions">
+                <button
+                  className="btn-primary"
+                  onClick={() =>
+                    handleContactClick("mailto:somaanm02@gmail.com", "email")
+                  }
+                >
+                  <FontAwesomeIcon icon={faPaperPlane} />
+                  Get In Touch
+                </button>
+
+                <button className="btn-secondary" onClick={handleDownloadCV}>
+                  <FontAwesomeIcon icon={faDownload} />
+                  Download CV
+                </button>
+              </div>
             </div>
+          </div>
+
+          {/* Contact Grid - Now Second */}
+          <div className="contact-grid">
+            {contactInfo.map((contact) => (
+              <ContactCard
+                key={contact.id}
+                contact={contact}
+                onContactClick={handleContactClick}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -174,7 +162,7 @@ const ContactCard = ({ contact, onContactClick }) => {
   return (
     <div className="contact-card glass-card">
       <div className="contact-card-icon">
-        <i className={contact.icon} aria-hidden="true"></i>
+        <FontAwesomeIcon icon={contact.icon} />
       </div>
 
       <div className="contact-card-content">
@@ -188,8 +176,8 @@ const ContactCard = ({ contact, onContactClick }) => {
             aria-label={`Contact via ${contact.title}: ${contact.value}`}
           >
             {contact.value}
-            {contact.type === "external" && (
-              <i className="fas fa-external-link-alt" aria-hidden="true"></i>
+            {contact.showExternalIcon && (
+              <FontAwesomeIcon icon={faExternalLinkAlt} />
             )}
           </button>
         ) : (
