@@ -2,6 +2,8 @@
 // Features animated elements and project showcase introduction
 
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faMouse } from "@fortawesome/free-solid-svg-icons";
 
 const Hero = ({ scrollToSection }) => {
   // Handle call-to-action button clicks
@@ -111,9 +113,12 @@ const Hero = ({ scrollToSection }) => {
       {/* Scroll Indicator */}
       <div className="scroll-indicator" onClick={handleViewProjects}>
         <div className="scroll-arrow">
-          <i className="fas fa-chevron-down" aria-hidden="true"></i>
+          <FontAwesomeIcon icon={faChevronDown} />
         </div>
-        <span>Scroll to explore</span>
+        <span>
+          <FontAwesomeIcon icon={faMouse} />
+          Scroll to explore
+        </span>
       </div>
     </section>
   );

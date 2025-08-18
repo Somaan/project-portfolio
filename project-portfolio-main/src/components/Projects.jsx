@@ -30,7 +30,7 @@ const Projects = () => {
         "bcrypt",
       ],
       description:
-        "Revolutionary gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalized feedback and comprehensive achievement systems.",
+        "Revolutionary gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalised feedback and comprehensive achievement systems.",
       keyMetrics: [
         {
           label: "User Improvement",
@@ -51,7 +51,7 @@ const Projects = () => {
       keyAchievements: [
         "52.2% improvement in user cybersecurity confidence through testing across 6 participants",
         "100% test coverage across 326 automated test cases using Jest and React Testing Library",
-        "AI-powered personalized feedback system using locally-hosted LLM (Ollama)",
+        "AI-powered personalised feedback system using locally-hosted LLM (Ollama)",
         "Three-tier progressive difficulty system covering phishing, vishing, smishing, and spear-phishing",
         "100% of participants correctly identified phishing responses after intervention (vs 66.6% before)",
         "83.3% accuracy identifying threats across multiple communication channels",
@@ -60,7 +60,7 @@ const Projects = () => {
         "PERN stack architecture (PostgreSQL-Express-React-Node.js) with integrated LLM capabilities",
         "Secure authentication with bcrypt hashing (work factor 10) and CAPTCHA verification",
         "Achievement system with streak tracking, leaderboards, and visual progress indicators",
-        "Comprehensive user analytics with detailed performance tracking and behavioral analysis",
+        "Comprehensive user analytics with detailed performance tracking and behavioural analysis",
         "Multi-format quiz system: email phishing, SMS smishing, voice transcript analysis",
         "Real-time feedback generation with context-aware AI recommendations",
       ],
@@ -139,24 +139,36 @@ const Projects = () => {
         "Multi-modal processing pipeline combining audio impact detection with visual ball tracking",
         "OpenCV-based ball detection using HoughCircles transform with tuned parameters (dp=1.2, minDist=20)",
         "Adaptive audio processing with dynamic thresholding at 70% of maximum amplitude",
-        "Synchronized processing handling smartphone video with precise timestamp correlation",
+        "Synchronised processing handling smartphone video with precise timestamp correlation",
         "Image enhancement pipeline improving contrast and brightness for better detection",
         "Decision logic implementing official squash service line rules with 1-pixel tolerance",
       ],
       liveDemo: null,
-      githubRepo: "https://github.com/Somaan/SquashHawkeye",
+      githubRepo: "https://github.com/Somaan/Squash-Hawkeye",
       images: [
         {
-          src: "/images/squash-detection.png",
-          alt: "Ball Detection and Line Calling",
+          src: "/images/Figure 1.png",
+          alt: "Legal Squash Serve Trajectory Diagram",
           caption:
-            "Green circle around detected squash ball with red service line and IN/OUT decision",
+            "Official squash court diagram showing typical ball path during a legal serve, illustrating the technical requirements for service line detection",
         },
         {
-          src: "/images/squash-setup.png",
-          alt: "Recording Setup and System",
+          src: "/images/Figure 5.png",
+          alt: "Smartphone Recording Setup",
           caption:
-            "Smartphone recording setup positioned on tripod with clear view of service box",
+            "Cost-effective recording setup using smartphone on tripod positioned with clear view of service box, demonstrating accessible hardware alternative to professional systems",
+        },
+        {
+          src: "/images/Figure 10.png",
+          alt: "Edge Case Validation Results",
+          caption:
+            "Grid of challenging edge cases showing system accuracy in borderline scenarios where ball positions are critical for IN/OUT decisions, achieving 82% accuracy",
+        },
+        {
+          src: "/images/Figure 11.png",
+          alt: "Multi-Layer System Output",
+          caption:
+            "Console output showing precise coordinates, measurements, and decision logic - demonstrating the system's transparent multi-depth feedback for validation and development",
         },
       ],
     },
@@ -230,26 +242,6 @@ const Projects = () => {
             />
           ))}
         </div>
-
-        {/* Call to Action */}
-        <div className="projects-cta">
-          <h3>Interested in collaborating?</h3>
-          <p>
-            I'm always excited to work on innovative projects that push the
-            boundaries of technology.
-          </p>
-          <button
-            className="btn-primary"
-            onClick={() =>
-              document
-                .getElementById("contact")
-                .scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            <FontAwesomeIcon icon="rocket" />
-            Let's Build Something Amazing
-          </button>
-        </div>
       </div>
 
       {/* Project Details Modal */}
@@ -278,10 +270,6 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
       <div className="project-header">
         <div className="project-meta">
           <span className="project-category">{project.category}</span>
-          <span className="project-period">
-            <FontAwesomeIcon icon="calendar-alt" />
-            {project.period}
-          </span>
         </div>
         <h3 className="project-title">{project.title}</h3>
         <p className="project-subtitle">{project.subtitle}</p>
