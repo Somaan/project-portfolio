@@ -51,7 +51,7 @@ const Navigation = ({
       <div className="nav-container">
         {/* Logo/Brand */}
         <div className="nav-logo">
-          <h2 onClick={() => handleNavClick("home")}>Somaan Mirza</h2>
+          <h2 onClick={() => handleNavClick("home")}>SM Designs</h2>
         </div>
 
         {/* Navigation Content */}

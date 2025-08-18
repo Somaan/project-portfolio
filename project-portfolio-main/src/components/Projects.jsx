@@ -353,6 +353,30 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
 // Project Modal Component
 const ProjectModal = ({ project, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const openLightbox = (index = selectedImageIndex) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
+    document.body.style.overflow = "hidden"; // Prevent background scrolling
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = "unset"; // Restore background scrolling
+  };
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape" && lightboxOpen) {
+        closeLightbox();
+      }
+    };
+    if (lightboxOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [lightboxOpen]);
 
   const nextImage = () => {
     setSelectedImageIndex((prev) =>
@@ -393,6 +417,65 @@ const ProjectModal = ({ project, onClose }) => {
             <FontAwesomeIcon icon="times" />
           </button>
         </div>
+        {lightboxOpen && (
+          <div className="lightbox-overlay" onClick={closeLightbox}>
+            <div
+              className="lightbox-container"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                className="lightbox-close"
+                onClick={closeLightbox}
+                aria-label="Close lightbox"
+              >
+                <FontAwesomeIcon icon="times" />
+              </button>
+
+              {/* Navigation arrows */}
+              {project.images.length > 1 && (
+                <>
+                  <button
+                    className="lightbox-nav lightbox-prev"
+                    onClick={prevImage}
+                    aria-label="Previous image"
+                  >
+                    <FontAwesomeIcon icon="chevron-left" />
+                  </button>
+                  <button
+                    className="lightbox-nav lightbox-next"
+                    onClick={nextImage}
+                    aria-label="Next image"
+                  >
+                    <FontAwesomeIcon icon="chevron-right" />
+                  </button>
+                </>
+              )}
+
+              {/* Main lightbox content */}
+              <div className="lightbox-content">
+                <img
+                  src={project.images[selectedImageIndex].src}
+                  alt={project.images[selectedImageIndex].alt}
+                  className="lightbox-image"
+                />
+
+                {/* Caption */}
+                <div className="lightbox-caption">
+                  <h5>{project.images[selectedImageIndex].alt}</h5>
+                  <p>{project.images[selectedImageIndex].caption}</p>
+                </div>
+              </div>
+
+              {/* Image counter */}
+              {project.images.length > 1 && (
+                <div className="lightbox-counter">
+                  {selectedImageIndex + 1} / {project.images.length}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Modal Body */}
         <div className="modal-body">
@@ -400,23 +483,44 @@ const ProjectModal = ({ project, onClose }) => {
           {project.images && project.images.length > 0 && (
             <div className="modal-gallery">
               <div className="gallery-main">
-                <div className="main-image-container">
+                <div
+                  className="main-image-container"
+                  onClick={() => openLightbox(selectedImageIndex)}
+                >
                   <img
                     src={project.images[selectedImageIndex].src}
                     alt={project.images[selectedImageIndex].alt}
-                    className="main-image"
+                    className="main-image clickable-image"
                   />
+
+                  {/* Expand hint overlay */}
+                  <div className="image-expand-overlay">
+                    <div className="expand-hint">
+                      <FontAwesomeIcon icon="expand-arrows-alt" />
+                      <span>Click to expand</span>
+                    </div>
+                  </div>
+
+                  {/* Your existing navigation arrows stay exactly the same */}
                   {project.images.length > 1 && (
                     <>
                       <button
                         className="gallery-nav gallery-prev"
-                        onClick={prevImage}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering lightbox
+                          prevImage();
+                        }}
+                        aria-label="Previous image"
                       >
                         <FontAwesomeIcon icon="chevron-left" />
                       </button>
                       <button
                         className="gallery-nav gallery-next"
-                        onClick={nextImage}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering lightbox
+                          nextImage();
+                        }}
+                        aria-label="Next image"
                       >
                         <FontAwesomeIcon icon="chevron-right" />
                       </button>
