@@ -1,6 +1,3 @@
-// components/Hero.js - Modern Hero Section with Project Focus
-// Features animated elements and project showcase introduction
-
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faMouse } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +16,7 @@ const Hero = ({ scrollToSection }) => {
   const handleDownloadCV = () => {
     // Create a link element and trigger download
     const link = document.createElement("a");
-    link.href = "/documents/Somaan_Mirza_CV.pdf"; // Add your CV to public/documents/
+    link.href = "/documents/Somaan_Mirza_CV.pdf";
     link.download = "Somaan_Mirza_CV.pdf";
     link.click();
   };

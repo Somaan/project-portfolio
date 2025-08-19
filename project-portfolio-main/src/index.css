@@ -119,10 +119,9 @@ body {
   animation: float 20s ease-in-out infinite;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-20px) rotate(120deg); }
-  66% { transform: translateY(20px) rotate(240deg); }
+@keyframes floatVertical {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
 /* ========================================
@@ -390,7 +389,7 @@ p {
   margin-bottom: 2rem;
   font-size: 0.9rem;
   color: var(--text-secondary);
-  /* animation: slideInUp 0.8s ease-out; */
+  animation: slideInUp 0.8s ease-out;
 }
 
 .hero-badge::before {
@@ -644,7 +643,7 @@ p {
   justify-content: center;
   background: var(--bg-card);
   backdrop-filter: blur(20px);
-  animation: float 3s ease-in-out infinite;
+  animation: floatVertical 3s ease-in-out infinite; 
 }
 
 .scroll-indicator span {
