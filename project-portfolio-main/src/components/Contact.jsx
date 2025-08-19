@@ -95,11 +95,13 @@ const Contact = () => {
             <div className="bio-card glass-card">
               <h3>About Me</h3>
               <p>
-                I'm a passionate software engineer with expertise in building
-                secure, scalable systems that solve real-world problems. My work
-                spans AI-powered educational platforms, computer vision
-                applications, and full-stack web development. I believe in
-                creating technology that makes a measurable impact.
+                Currently pursuing a Masters in Computer Science, I'm passionate
+                about software development and systems engineering, with
+                expertise in building secure, scalable systems that solve
+                real-world problems. My work spans AI-powered educational
+                platforms, computer vision applications, and full-stack web
+                development. I believe in creating technology that makes a
+                measurable impact.
               </p>
 
               <div className="bio-highlights">

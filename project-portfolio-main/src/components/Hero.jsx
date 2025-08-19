@@ -42,7 +42,7 @@ const Hero = ({ scrollToSection }) => {
           <p className="hero-description">
             I create cutting-edge applications that solve real-world problems.
             From AI-powered cybersecurity education platforms to computer vision
-            sports technology - I build systems that make a measurable impact.
+            sports technology - Building systems that have measurable impact.
           </p>
 
           {/* Call-to-Action Buttons */}
