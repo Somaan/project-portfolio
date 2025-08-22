@@ -1136,7 +1136,7 @@ p {
 
 .btn-github,
 .btn-demo {
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
@@ -1145,6 +1145,7 @@ p {
   align-items: center;
   gap: 0.5rem;
   border: none;
+  width: 100%;
   flex: 1;
   justify-content: center;
   text-decoration: none;
@@ -2961,4 +2962,302 @@ a:focus {
   .contact-item {
     break-inside: avoid;
   }
+}
+
+/* TARGETED FIX: Hero Demo Window Mobile Layout */
+
+@media (max-width: 768px) {
+  .hero-demo {
+    height: 280px !important; /* Reduce height significantly */
+    max-width: 90% !important; /* Don't take full width */
+    margin: 0 auto 2rem auto !important; /* Center and add bottom margin */
+  }
+  
+  .demo-window {
+    height: 100% !important;
+    max-height: 280px !important;
+  }
+  
+  .demo-content {
+    padding: 1rem !important; /* Reduce padding */
+  }
+  
+  .demo-icon {
+    font-size: 2.5rem !important; /* Smaller icon */
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .demo-content h3 {
+    font-size: 1.2rem !important; /* Smaller title */
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .demo-text {
+    font-size: 0.85rem !important; /* Smaller text */
+    margin-bottom: 1rem !important;
+  }
+  
+  .quick-stats {
+    grid-template-columns: repeat(3, 1fr) !important; /* Keep 3 columns but smaller */
+    gap: 0.5rem !important;
+  }
+  
+  .stat-item {
+    padding: 0.5rem !important; /* Less padding */
+  }
+  
+  .stat-number {
+    font-size: 1.1rem !important; /* Smaller numbers */
+  }
+  
+  .stat-label {
+    font-size: 0.65rem !important; /* Smaller labels */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-demo {
+    height: 240px !important; /* Even smaller on phones */
+    max-width: 95% !important;
+  }
+  
+  .demo-content {
+    padding: 0.8rem !important;
+  }
+  
+  .demo-icon {
+    font-size: 2rem !important;
+  }
+  
+  .demo-content h3 {
+    font-size: 1.1rem !important;
+  }
+  
+  .demo-text {
+    font-size: 0.8rem !important;
+  }
+  
+  .quick-stats {
+    gap: 0.3rem !important;
+  }
+  
+  .stat-item {
+    padding: 0.4rem !important;
+  }
+  
+  .stat-number {
+    font-size: 1rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.6rem !important;
+  }
+}
+/* BUTTON SIZE CONSISTENCY FIX */
+
+/* Make all project action buttons the same size */
+.details-button,
+.btn-github,
+.btn-demo {
+  padding: 1rem 1.5rem !important; /* Same padding for all */
+  border-radius: 12px !important; /* Same border radius */
+  font-weight: 600 !important;
+  font-size: 1rem !important; /* Same font size */
+  min-height: 50px !important; /* Same minimum height */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important; /* Full width for all buttons */
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+}
+
+/* Project actions container - stack buttons vertically with same spacing */
+.project-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  margin-top: 2rem !important;
+  width: 100% !important;
+}
+
+/* External links container - remove flex properties to stack vertically */
+.external-links {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  width: 100% !important;
+}
+
+/* Ensure consistent styling for different button types */
+.details-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+.btn-github {
+  background: #24292e !important;
+  color: white !important;
+}
+
+.btn-demo {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  color: white !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .details-button,
+  .btn-github,
+  .btn-demo {
+    padding: 0.9rem 1.5rem !important;
+    font-size: 0.95rem !important;
+    min-height: 48px !important; /* Better touch target on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .details-button,
+  .btn-github,
+  .btn-demo {
+    padding: 0.85rem 1.2rem !important;
+    font-size: 0.9rem !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ========================================
+   CONSISTENT PROJECT BUTTON STYLING
+   ======================================== */
+
+/* Base button styling - all buttons will be exactly the same size */
+.project-button {
+  width: 100%;
+  height: 50px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  box-sizing: border-box;
+  text-decoration: none;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Different button types - only background colors differ */
+.project-button-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.project-button-secondary {
+  background: #24292e;
+}
+
+.project-button-demo {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Hover effects */
+.project-button:hover {
+  transform: translateY(-2px);
+}
+
+.project-button-primary:hover {
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+.project-button-secondary:hover {
+  background: #1a1e22;
+  box-shadow: 0 10px 25px rgba(36, 41, 46, 0.4);
+}
+
+.project-button-demo:hover {
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+}
+
+/* Container styling */
+.project-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Remove any existing conflicting styles */
+.project-card .project-actions .details-button,
+.project-card .project-actions .btn-github,
+.project-card .project-actions .btn-demo,
+.project-card .project-actions .btn-secondary,
+.project-card .project-actions .external-links {
+  /* Reset any existing styles that might conflict */
+  all: unset;
+}
+
+.project-card .project-actions .external-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .project-button {
+    height: 48px;
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-button {
+    height: 44px;
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+}
+
+/* Focus states for accessibility */
+.project-button:focus {
+  outline: 2px solid rgba(102, 126, 234, 0.8);
+  outline-offset: 2px;
+}
+
+/* Active states */
+.project-button:active {
+  transform: translateY(0);
+}
+
+/* Loading state (if needed) */
+.project-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Icon styling within buttons */
+.project-button svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Text styling within buttons */
+.project-button span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
