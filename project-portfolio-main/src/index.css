@@ -3261,3 +3261,80 @@ a:focus {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* REPLACE your existing .projects-grid rule with this: */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 450px); /* Wider cards for boxier look */
+  gap: 1.5rem; /* Slightly smaller gap */
+  margin-bottom: 4rem;
+  justify-content: center;
+}
+
+/* Make cards more compact and boxy */
+.project-card {
+  padding: 1.0rem !important; /* Less vertical padding */
+}
+
+.project-metrics {
+  grid-template-columns: repeat(3, 1fr) !important; /* Force metrics into 3 columns */
+  gap: 0.8rem !important;
+  margin: 1rem 0 !important; /* Less vertical margin */
+}
+
+.metric-card {
+  padding: 0.8rem !important; /* Compact metric cards */
+}
+
+.project-description {
+  margin: 1rem 0 !important; /* Less vertical spacing */
+  line-height: 1.5 !important; /* Tighter line height */
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1400px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    justify-content: stretch;
+  }
+  
+  /* Reset overrides on smaller screens */
+  .project-card {
+    padding: 2rem !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 2rem;
+  }
+}
+/* Project Card - Compact Version */
+.project-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(50px);
+  position: relative;
+  overflow: hidden;
+  
+  /* Flexbox for consistent internal layout */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 650px; /* Increased to accommodate tighter spacing */
+}
