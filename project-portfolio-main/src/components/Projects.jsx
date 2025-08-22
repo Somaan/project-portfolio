@@ -14,7 +14,7 @@ const Projects = () => {
       id: "securityquest",
       title: "SecurityQuest",
       subtitle: "AI-Powered Cybersecurity Education Platform",
-      //: "2024-2025 (Final Year Project)",
+      period: "2024-2025 (Final Year Project)",
       category: "Full-Stack Development",
       primaryTech: "React",
       technologies: [
@@ -94,7 +94,7 @@ const Projects = () => {
       id: "squash-hawkeye",
       title: "Squash Hawkeye",
       subtitle: "Computer Vision Sports Technology",
-      //period: "2024 (Ubiquitous Computing Assignment)",
+      period: "2024 (Ubiquitous Computing Assignment)",
       category: "Computer Vision",
       primaryTech: "Python",
       technologies: [
@@ -514,22 +514,6 @@ const ProjectModal = ({ project, onClose }) => {
               {project.images.length > 1 && (
                 <div className="lightbox-counter">
                   {selectedImageIndex + 1} / {project.images.length}
-                </div>
-              )}
-
-              {/* Mobile navigation dots */}
-              {project.images.length > 1 && (
-                <div className="lightbox-dots">
-                  {project.images.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`lightbox-dot ${
-                        index === selectedImageIndex ? "active" : ""
-                      }`}
-                      onClick={() => setSelectedImageIndex(index)}
-                      aria-label={`Go to image ${index + 1}`}
-                    />
-                  ))}
                 </div>
               )}
             </div>
