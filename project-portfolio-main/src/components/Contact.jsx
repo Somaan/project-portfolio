@@ -98,10 +98,13 @@ const Contact = () => {
                 Currently pursuing a Masters in Computer Science, I'm passionate
                 about software development and systems engineering, with
                 expertise in building secure, scalable systems that solve
-                real-world problems. My work spans AI-powered educational
-                platforms, computer vision applications, and full-stack web
-                development. I believe in creating technology that makes a
-                measurable impact.
+                real-world problems. I believe in creating technology that makes
+                a measurable impact. When I'm not coding, you'll find me on the
+                squash court or playing guitar. Squash has taught me strategy
+                and quick decision-making, while music fuels my creativity. As
+                Squash Club President, I've developed leadership and
+                team-building skills that enhance my collaborative approach to
+                software development.
               </p>
 
               <div className="bio-highlights">

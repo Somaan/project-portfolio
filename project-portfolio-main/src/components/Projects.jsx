@@ -1,6 +1,3 @@
-// components/Projects.js - Enhanced Projects Showcase with Modal Details
-// Features clean project cards with modal popups for detailed information
-
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -17,7 +14,7 @@ const Projects = () => {
       id: "securityquest",
       title: "SecurityQuest",
       subtitle: "AI-Powered Cybersecurity Education Platform",
-      period: "2024-2025 (Final Year Project)",
+      //: "2024-2025 (Final Year Project)",
       category: "Full-Stack Development",
       primaryTech: "React",
       technologies: [
@@ -97,7 +94,7 @@ const Projects = () => {
       id: "squash-hawkeye",
       title: "Squash Hawkeye",
       subtitle: "Computer Vision Sports Technology",
-      period: "2024 (Ubiquitous Computing Assignment)",
+      //period: "2024 (Ubiquitous Computing Assignment)",
       category: "Computer Vision",
       primaryTech: "Python",
       technologies: [
@@ -252,7 +249,7 @@ const Projects = () => {
   );
 };
 
-// Enhanced Project Card Component (Compact Version)
+// Enhanced Project Card Component with Consistent Buttons
 const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
   const handleExternalLink = (url) => {
     if (url) {
@@ -300,10 +297,10 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
       {/* Project Description */}
       <p className="project-description">{project.description}</p>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Updated for consistent sizing */}
       <div className="project-actions">
         <button
-          className="details-button"
+          className="project-button project-button-primary"
           onClick={() => onOpenModal(project.id)}
           aria-label={`View detailed information about ${project.title}`}
         >
@@ -311,60 +308,53 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
           <FontAwesomeIcon icon="arrow-right" />
         </button>
 
-        <div className="external-links">
-          {project.githubRepo && (
-            <button
-              className="btn-secondary btn-github"
-              onClick={() => handleExternalLink(project.githubRepo)}
-              aria-label={`View ${project.title} on GitHub`}
-            >
-              <FontAwesomeIcon icon={["fab", "github"]} />
-              View Code
-            </button>
-          )}
-          {project.liveDemo && (
-            <button
-              className="btn-primary btn-demo"
-              onClick={() => handleExternalLink(project.liveDemo)}
-              aria-label={`View live demo of ${project.title}`}
-            >
-              <FontAwesomeIcon icon="external-link-alt" />
-              Live Demo
-            </button>
-          )}
-        </div>
+        {project.githubRepo && (
+          <button
+            className="project-button project-button-secondary"
+            onClick={() => handleExternalLink(project.githubRepo)}
+            aria-label={`View ${project.title} on GitHub`}
+          >
+            <FontAwesomeIcon icon={["fab", "github"]} />
+            <span>View Code</span>
+          </button>
+        )}
+
+        {project.liveDemo && (
+          <button
+            className="project-button project-button-demo"
+            onClick={() => handleExternalLink(project.liveDemo)}
+            aria-label={`View live demo of ${project.title}`}
+          >
+            <FontAwesomeIcon icon="external-link-alt" />
+            <span>Live Demo</span>
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
-// Project Modal Component
+// Enhanced Project Modal Component with Mobile Swipe Support
 const ProjectModal = ({ project, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  // Touch handling for swipe gestures
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [isSwipeActive, setIsSwipeActive] = useState(false);
+
   const openLightbox = (index = selectedImageIndex) => {
     setSelectedImageIndex(index);
     setLightboxOpen(true);
-    document.body.style.overflow = "hidden"; // Prevent background scrolling
+    document.body.style.overflow = "hidden";
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = "unset"; // Restore background scrolling
+    document.body.style.overflow = "unset";
+    setIsSwipeActive(false);
   };
-
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape" && lightboxOpen) {
-        closeLightbox();
-      }
-    };
-    if (lightboxOpen) {
-      document.addEventListener("keydown", handleEscape);
-    }
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [lightboxOpen]);
 
   const nextImage = () => {
     setSelectedImageIndex((prev) =>
@@ -377,6 +367,65 @@ const ProjectModal = ({ project, onClose }) => {
       prev === 0 ? project.images.length - 1 : prev - 1
     );
   };
+
+  // Touch event handlers for swipe functionality
+  const handleTouchStart = (e) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsSwipeActive(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isSwipeActive) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd || !isSwipeActive) {
+      setIsSwipeActive(false);
+      return;
+    }
+
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      nextImage();
+    }
+
+    if (distance < -minSwipeDistance) {
+      prevImage();
+    }
+
+    setIsSwipeActive(false);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (!lightboxOpen) return;
+
+      switch (e.key) {
+        case "Escape":
+          closeLightbox();
+          break;
+        case "ArrowLeft":
+          prevImage();
+          break;
+        case "ArrowRight":
+          nextImage();
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (lightboxOpen) {
+      document.addEventListener("keydown", handleKeyPress);
+    }
+
+    return () => document.removeEventListener("keydown", handleKeyPress);
+  }, [lightboxOpen]);
 
   const handleExternalLink = (url) => {
     if (url) {
@@ -405,11 +454,16 @@ const ProjectModal = ({ project, onClose }) => {
             <FontAwesomeIcon icon="times" />
           </button>
         </div>
+
+        {/* Enhanced Lightbox with Swipe Support */}
         {lightboxOpen && (
           <div className="lightbox-overlay" onClick={closeLightbox}>
             <div
               className="lightbox-container"
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {/* Close button */}
               <button
@@ -446,6 +500,7 @@ const ProjectModal = ({ project, onClose }) => {
                   src={project.images[selectedImageIndex].src}
                   alt={project.images[selectedImageIndex].alt}
                   className="lightbox-image"
+                  draggable={false}
                 />
 
                 {/* Caption */}
@@ -459,6 +514,22 @@ const ProjectModal = ({ project, onClose }) => {
               {project.images.length > 1 && (
                 <div className="lightbox-counter">
                   {selectedImageIndex + 1} / {project.images.length}
+                </div>
+              )}
+
+              {/* Mobile navigation dots */}
+              {project.images.length > 1 && (
+                <div className="lightbox-dots">
+                  {project.images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`lightbox-dot ${
+                        index === selectedImageIndex ? "active" : ""
+                      }`}
+                      onClick={() => setSelectedImageIndex(index)}
+                      aria-label={`Go to image ${index + 1}`}
+                    />
+                  ))}
                 </div>
               )}
             </div>
@@ -489,13 +560,13 @@ const ProjectModal = ({ project, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Your existing navigation arrows stay exactly the same */}
+                  {/* Navigation arrows */}
                   {project.images.length > 1 && (
                     <>
                       <button
                         className="gallery-nav gallery-prev"
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent triggering lightbox
+                          e.stopPropagation();
                           prevImage();
                         }}
                         aria-label="Previous image"
@@ -505,7 +576,7 @@ const ProjectModal = ({ project, onClose }) => {
                       <button
                         className="gallery-nav gallery-next"
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent triggering lightbox
+                          e.stopPropagation();
                           nextImage();
                         }}
                         aria-label="Next image"

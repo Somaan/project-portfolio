@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faMouse } from "@fortawesome/free-solid-svg-icons";
 
 const Hero = ({ scrollToSection }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  // Check if device is mobile/tablet and window height
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      const height = window.innerHeight;
+      setIsMobile(mobile);
+      setWindowHeight(height);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Handle call-to-action button clicks
   const handleViewProjects = () => {
     scrollToSection("projects");
@@ -14,11 +31,19 @@ const Hero = ({ scrollToSection }) => {
 
   // Download CV function
   const handleDownloadCV = () => {
-    // Create a link element and trigger download
     const link = document.createElement("a");
     link.href = "/documents/Somaan_Mirza_CV.pdf";
     link.download = "Somaan_Mirza_CV.pdf";
     link.click();
+  };
+
+  // Determine if we should show scroll indicator
+  const shouldShowScrollIndicator = () => {
+    // Hide on very small screens or short viewport heights
+    if (isMobile && (window.innerWidth <= 480 || windowHeight <= 600)) {
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -107,16 +132,18 @@ const Hero = ({ scrollToSection }) => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="scroll-indicator" onClick={handleViewProjects}>
-        <div className="scroll-arrow">
-          <FontAwesomeIcon icon={faChevronDown} />
+      {/* Conditional Scroll Indicator */}
+      {shouldShowScrollIndicator() && (
+        <div className="scroll-indicator" onClick={handleViewProjects}>
+          <div className="scroll-arrow">
+            <FontAwesomeIcon icon={faChevronDown} />
+          </div>
+          <span>
+            <FontAwesomeIcon icon={faMouse} />
+            {isMobile ? "Tap to explore" : "Scroll to explore"}
+          </span>
         </div>
-        <span>
-          <FontAwesomeIcon icon={faMouse} />
-          Scroll to explore
-        </span>
-      </div>
+      )}
     </section>
   );
 };
