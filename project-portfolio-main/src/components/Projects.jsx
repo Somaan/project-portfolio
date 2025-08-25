@@ -354,6 +354,7 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
         flexDirection: "column",
         height: "100%",
         minHeight: "650px",
+        margin: "0 auto",
         background: "rgba(255, 255, 255, 0.95)",
         borderRadius: "20px",
         padding: "2rem",

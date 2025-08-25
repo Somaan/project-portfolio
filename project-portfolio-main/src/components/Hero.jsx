@@ -57,14 +57,15 @@ const Hero = ({ scrollToSection }) => {
           <h1 className="hero-title">Building Innovative Software Solutions</h1>
 
           <p className="hero-subtitle">
-            Experienced in Full-Stack Development, AI Integration & Computer
-            Vision
+            Experienced in Full-Stack Development, AI Integration, Computer
+            Vision & Machine Learning
           </p>
 
           <p className="hero-description">
             I create cutting-edge applications that solve real-world problems.
             From AI-powered cybersecurity education platforms to computer vision
-            sports technology - building systems that have measurable impact.
+            sports technology and ubiquitous computing research - building
+            systems that have measurable impact.
           </p>
 
           {/* Call-to-Action Buttons */}
@@ -106,21 +107,21 @@ const Hero = ({ scrollToSection }) => {
               <div className="demo-icon">
                 <i className="fas fa-code" aria-hidden="true"></i>
               </div>
-              <h3>Project Showcase</h3>
+              <h3>Research & Development Portfolio</h3>
               <p className="demo-text">
-                Explore interactive demonstrations of SecurityQuest and Squash
-                Hawkeye
+                Explore innovative projects spanning AI education, computer
+                vision, and machine learning research
               </p>
 
               {/* Quick Stats */}
               <div className="quick-stats">
                 <div className="stat-item">
-                  <span className="stat-number">2</span>
+                  <span className="stat-number">3</span>
                   <span className="stat-label">Major Projects</span>
                 </div>
                 <div className="stat-item">
-                  <span className="stat-number">82%</span>
-                  <span className="stat-label">Accuracy Achieved</span>
+                  <span className="stat-number">84%</span>
+                  <span className="stat-label">Peak Accuracy</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-number">326</span>
