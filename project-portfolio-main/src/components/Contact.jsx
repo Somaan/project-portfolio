@@ -101,10 +101,9 @@ const Contact = () => {
                 real-world problems. I believe in creating technology that makes
                 a measurable impact. When I'm not coding, you'll find me on the
                 squash court or playing guitar. Squash has taught me strategy
-                and quick decision-making, while music fuels my creativity. As
-                Squash Club President, I've developed leadership and
-                team-building skills that enhance my collaborative approach to
-                software development.
+                and quick decision-making. As Squash Club President, I've
+                developed leadership and team-building skills that enhance my
+                collaborative approach to software development.
               </p>
 
               <div className="bio-highlights">
