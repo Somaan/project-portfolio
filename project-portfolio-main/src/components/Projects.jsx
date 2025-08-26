@@ -14,7 +14,7 @@ const Projects = () => {
       id: "securityquest",
       title: "SecurityQuest",
       subtitle: "AI-Powered Cybersecurity Education Platform",
-      period: "2024-2025 (Final Year Project)",
+      //period: "2024-2025 (Final Year Project)",
       category: "Full-Stack Development",
       primaryTech: "React",
       technologies: [
@@ -94,7 +94,7 @@ const Projects = () => {
       id: "squash-hawkeye",
       title: "Squash Hawkeye",
       subtitle: "Computer Vision Sports Technology",
-      period: "2024 (Ubiquitous Computing Assignment)",
+      //period: "2024 (Ubiquitous Computing Assignment)",
       category: "Computer Vision",
       primaryTech: "Python",
       technologies: [
@@ -173,7 +173,7 @@ const Projects = () => {
       id: "ubiquitous-computing",
       title: "Sensing & Machine Learning",
       subtitle: "Ubiquitous Computing Research Applications",
-      period: "2024 (Ubiquitous Computing Labs)",
+      //period: "2024 (Ubiquitous Computing Labs)",
       category: "Machine Learning Research",
       primaryTech: "Python",
       technologies: [
@@ -354,7 +354,7 @@ const ProjectCard = ({ project, onOpenModal, isVisible, animationDelay }) => {
         flexDirection: "column",
         height: "100%",
         minHeight: "650px",
-        margin: "0 auto",
+        //margin: "0 auto",
         background: "rgba(255, 255, 255, 0.95)",
         borderRadius: "20px",
         padding: "2rem",
