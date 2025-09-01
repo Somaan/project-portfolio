@@ -120,7 +120,7 @@ const Projects = () => {
         },
         {
           label: "Video Processing",
-          value: "1080p@60fps",
+          value: "1080p60",
           description: "Smartphone footage analysis",
         },
       ],
