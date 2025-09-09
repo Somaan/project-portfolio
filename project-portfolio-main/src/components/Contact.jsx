@@ -75,8 +75,8 @@ const Contact = () => {
   const handleDownloadCV = () => {
     // Create a link element and trigger download
     const link = document.createElement("a");
-    link.href = "/documents/Somaan_Mirza_CV.pdf";
-    link.download = "Somaan_Mirza_CV.pdf";
+    link.href = "/documents/Somaan-Mirza-CV.pdf";
+    link.download = "Somaan-Mirza-CV.pdf";
     link.click();
   };
 
@@ -117,7 +117,7 @@ const Contact = () => {
                 </div>
                 <div className="highlight-item">
                   <FontAwesomeIcon icon={faUsers} />
-                  <span>Squash Club President & Team Leader</span>
+                  <span>UEA Squash President</span>
                 </div>
               </div>
 

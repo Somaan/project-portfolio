@@ -32,8 +32,8 @@ const Hero = ({ scrollToSection }) => {
   // Download CV function
   const handleDownloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/documents/Somaan_Mirza_CV.pdf";
-    link.download = "Somaan_Mirza_CV.pdf";
+    link.href = "/documents/Somaan-Mirza-CV.pdf";
+    link.download = "Somaan-Mirza-CV.pdf";
     link.click();
   };
 
