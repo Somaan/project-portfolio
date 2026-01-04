@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faMouse } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Hero = ({ scrollToSection }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -32,8 +32,8 @@ const Hero = ({ scrollToSection }) => {
   // Download CV function
   const handleDownloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/documents/Somaan-Mirza-CV.pdf";
-    link.download = "Somaan-Mirza-CV.pdf";
+    link.href = "/documents/Somaan_Mirza_CV.pdf";
+    link.download = "Somaan_Mirza_CV.pdf";
     link.click();
   };
 
@@ -52,21 +52,38 @@ const Hero = ({ scrollToSection }) => {
         {/* Hero Content */}
         <div className="hero-content">
           {/* Status Badge */}
-          <div className="hero-badge">Available for opportunities</div>
+          <div className="hero-badge">
+            <span className="badge-dot"></span>
+            Available for opportunities
+          </div>
 
-          <h1 className="hero-title">Building Innovative Software Solutions</h1>
+          <h1 className="hero-title">Somaan Mirza</h1>
 
-          <p className="hero-subtitle">
-            Experienced in Full-Stack Development, AI Integration, Computer
-            Vision & Machine Learning
-          </p>
+          <p className="hero-subtitle">Full-Stack Developer & Researcher</p>
 
           <p className="hero-description">
-            I create cutting-edge applications that solve real-world problems.
-            From AI-powered cybersecurity education platforms to computer vision
-            sports technology and ubiquitous computing research - building
-            systems that have measurable impact.
+            Specializing in AI-powered applications, computer vision systems,
+            and machine learning research. Building secure, scalable solutions
+            that solve real-world problems with measurable impact.
           </p>
+
+          {/* Quick Stats - Cleaner Version */}
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-number">3</span>
+              <span className="stat-label">Major Projects</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-number">84%</span>
+              <span className="stat-label">Peak Accuracy</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-number">326</span>
+              <span className="stat-label">Tests Passed</span>
+            </div>
+          </div>
 
           {/* Call-to-Action Buttons */}
           <div className="hero-buttons">
@@ -75,8 +92,8 @@ const Hero = ({ scrollToSection }) => {
               onClick={handleViewProjects}
               aria-label="View my projects"
             >
-              <i className="fas fa-rocket" aria-hidden="true"></i>
-              Explore My Work
+              View Projects
+              <i className="fas fa-arrow-right" aria-hidden="true"></i>
             </button>
 
             <button
@@ -89,48 +106,6 @@ const Hero = ({ scrollToSection }) => {
             </button>
           </div>
         </div>
-
-        {/* Interactive Demo Window */}
-        <div className="hero-demo">
-          <div className="demo-window">
-            {/* Demo Window Header */}
-            <div className="demo-header">
-              <div className="demo-dots">
-                <div className="demo-dot"></div>
-                <div className="demo-dot"></div>
-                <div className="demo-dot"></div>
-              </div>
-            </div>
-
-            {/* Demo Content */}
-            <div className="demo-content">
-              <div className="demo-icon">
-                <i className="fas fa-code" aria-hidden="true"></i>
-              </div>
-              <h3>Research & Development Portfolio</h3>
-              <p className="demo-text">
-                Explore innovative projects spanning AI education, computer
-                vision, and machine learning research
-              </p>
-
-              {/* Quick Stats */}
-              <div className="quick-stats">
-                <div className="stat-item">
-                  <span className="stat-number">3</span>
-                  <span className="stat-label">Major Projects</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">84%</span>
-                  <span className="stat-label">Peak Accuracy</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">326</span>
-                  <span className="stat-label">Tests Passed</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Conditional Scroll Indicator */}
@@ -139,10 +114,7 @@ const Hero = ({ scrollToSection }) => {
           <div className="scroll-arrow">
             <FontAwesomeIcon icon={faChevronDown} />
           </div>
-          <span>
-            <FontAwesomeIcon icon={faMouse} />
-            {isMobile ? "Tap to explore" : "Scroll to explore"}
-          </span>
+          <span>Scroll to explore</span>
         </div>
       )}
     </section>
