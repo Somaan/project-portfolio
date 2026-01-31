@@ -28,13 +28,13 @@ library.add(
   faTrophy,
   faCogs,
   faGithub,
-  faSearchPlus
+  faSearchPlus,
 );
-import Navigation from "./components/Navigation";
-import Hero from "./components/Hero";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import "./index.css";
+import Navigation from "./Navigation";
+import Hero from "./Hero";
+import Projects from "./Projects";
+import Contact from "./Contact";
+//import "../index.css";
 
 const App = () => {
   // State for tracking which section is currently active (for navigation highlighting)
@@ -46,7 +46,7 @@ const App = () => {
   // Effect to handle scroll detection and update active section
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "projects", "contact"]; // Removed 'about'
+      const sections = ["home", "projects", "contact"];
       const scrollPosition = window.scrollY + 100; // Offset for navbar height
 
       // Check which section is currently in view

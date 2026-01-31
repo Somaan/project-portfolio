@@ -39,7 +39,7 @@ const Navigation = ({
   React.useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: dark)",
     ).matches;
     const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
 
@@ -51,7 +51,7 @@ const Navigation = ({
       <div className="nav-container">
         {/* Logo/Brand */}
         <div className="nav-logo">
-          <h2 onClick={() => handleNavClick("home")}>SM Designs</h2>
+          <h2 onClick={() => handleNavClick("home")}></h2>
         </div>
 
         {/* Navigation Content */}

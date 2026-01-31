@@ -1,35 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faMouse } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 const Hero = ({ scrollToSection }) => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [windowHeight, setWindowHeight] = useState(0);
-
-  // Check if device is mobile/tablet and window height
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      const height = window.innerHeight;
-      setIsMobile(mobile);
-      setWindowHeight(height);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Handle call-to-action button clicks
   const handleViewProjects = () => {
     scrollToSection("projects");
   };
 
-  const handleGetInTouch = () => {
-    scrollToSection("contact");
-  };
-
-  // Download CV function
   const handleDownloadCV = () => {
     const link = document.createElement("a");
     link.href = "/documents/Somaan_Mirza_CV.pdf";
@@ -37,114 +12,60 @@ const Hero = ({ scrollToSection }) => {
     link.click();
   };
 
-  // Determine if we should show scroll indicator
-  const shouldShowScrollIndicator = () => {
-    // Hide on very small screens or short viewport heights
-    if (isMobile && (window.innerWidth <= 480 || windowHeight <= 600)) {
-      return false;
-    }
-    return true;
-  };
-
   return (
     <section id="home" className="hero-section">
       <div className="hero-container">
-        {/* Hero Content */}
         <div className="hero-content">
-          {/* Status Badge */}
-          <div className="hero-badge">Available for opportunities</div>
-
-          <h1 className="hero-title">Building Innovative Software Solutions</h1>
-
-          <p className="hero-subtitle">
-            Experienced in Full-Stack Development, AI Integration, Computer
-            Vision & Machine Learning
-          </p>
+          <span className="hero-greeting">Welcome! I'm</span>
+          <h3 className="hero-name">Somaan Mirza</h3>
 
           <p className="hero-description">
-            I create cutting-edge applications that solve real-world problems.
-            From AI-powered cybersecurity education platforms to computer vision
-            sports technology and ubiquitous computing research - building
-            systems that have measurable impact.
+            I made this portfolio to showcase what projects I've built over the
+            years, spanning from full stack applications using local LLM
+            applications, computer vision systems, and various machine learning
+            projects. I am currently completing my masters in Advanced Computer
+            Science student at Queen Mary, specialising in Data & Software
+            Engineering. My MSc research project will focus on deep learning
+            tools for medical diagnostics.
           </p>
 
-          {/* Call-to-Action Buttons */}
           <div className="hero-buttons">
             <button
               className="btn-primary"
               onClick={handleViewProjects}
               aria-label="View my projects"
             >
-              <i className="fas fa-rocket" aria-hidden="true"></i>
-              Explore My Work
+              View Projects
             </button>
-
             <button
               className="btn-secondary"
               onClick={handleDownloadCV}
               aria-label="Download my CV"
             >
-              <i className="fas fa-download" aria-hidden="true"></i>
               Download CV
             </button>
           </div>
-        </div>
 
-        {/* Interactive Demo Window */}
-        <div className="hero-demo">
-          <div className="demo-window">
-            {/* Demo Window Header */}
-            <div className="demo-header">
-              <div className="demo-dots">
-                <div className="demo-dot"></div>
-                <div className="demo-dot"></div>
-                <div className="demo-dot"></div>
-              </div>
+          <div className="hero-stats">
+            <div className="stat">
+              <span className="stat-value">3+</span>
+              <span className="stat-label">Projects</span>
             </div>
-
-            {/* Demo Content */}
-            <div className="demo-content">
-              <div className="demo-icon">
-                <i className="fas fa-code" aria-hidden="true"></i>
-              </div>
-              <h3>Research & Development Portfolio</h3>
-              <p className="demo-text">
-                Explore innovative projects spanning AI education, computer
-                vision, and machine learning research
-              </p>
-
-              {/* Quick Stats */}
-              <div className="quick-stats">
-                <div className="stat-item">
-                  <span className="stat-number">3</span>
-                  <span className="stat-label">Major Projects</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">84%</span>
-                  <span className="stat-label">Peak Accuracy</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">326</span>
-                  <span className="stat-label">Tests Passed</span>
-                </div>
-              </div>
+            <div className="stat-divider" />
+            <div className="stat">
+              <span className="stat-value">84%</span>
+              <span className="stat-label">ML Accuracy</span>
+            </div>
+            <div className="stat-divider" />
+            <div className="stat">
+              <span className="stat-value">326</span>
+              <span className="stat-label">Tests Passed</span>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Conditional Scroll Indicator */}
-      {shouldShowScrollIndicator() && (
-        <div className="scroll-indicator" onClick={handleViewProjects}>
-          <div className="scroll-arrow">
-            <FontAwesomeIcon icon={faChevronDown} />
-          </div>
-          <span>
-            <FontAwesomeIcon icon={faMouse} />
-            {isMobile ? "Tap to explore" : "Scroll to explore"}
-          </span>
-        </div>
-      )}
     </section>
   );
 };
+
+export default Hero;
