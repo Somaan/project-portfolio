@@ -17,16 +17,15 @@ const Hero = ({ scrollToSection }) => {
       <div className="hero-container">
         <div className="hero-content">
           <span className="hero-greeting">Welcome! I'm</span>
-          <h3 className="hero-name">Somaan Mirza</h3>
+          <h5 className="hero-name">Somaan Mirza</h5>
 
           <p className="hero-description">
-            I made this portfolio to showcase what projects I've built over the
-            years, spanning from full stack applications using local LLM
-            applications, computer vision systems, and various machine learning
-            projects. I am currently completing my masters in Advanced Computer
-            Science student at Queen Mary, specialising in Data & Software
-            Engineering. My MSc research project will focus on deep learning
-            tools for medical diagnostics.
+            A Master's student in Advanced Computer Science at Queen Mary
+            University of London, specialising in Data & Software Engineering.
+            In my portfolio, you'll find projects that demonstrate my ability to
+            build full-stack applications with AI integrated features, computer
+            vision systems, and machine learning solutions. My MSc research
+            focuses on deep learning tools for medical diagnostics.
           </p>
 
           <div className="hero-buttons">

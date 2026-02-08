@@ -27,7 +27,7 @@ const Projects = () => {
         "bcrypt",
       ],
       description:
-        "Revolutionary gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalised feedback and comprehensive achievement systems.",
+        "PERN full-stack gamified platform addressing human vulnerability to social engineering attacks through interactive learning experiences. Features AI-powered personalised feedback and comprehensive achievement systems.",
       keyMetrics: [
         {
           label: "User Improvement",
@@ -106,7 +106,7 @@ const Projects = () => {
         "Audio Processing",
       ],
       description:
-        "Innovative multi-modal system integrating computer vision and audio processing for automated sports officiating. Created cost-effective alternative to professional systems costing £60,000-£100,000.",
+        "Multi-modal system integrating computer vision and audio processing for automated sports officiating. Created cost-effective alternative to professional systems costing £60,000-£100,000.",
       keyMetrics: [
         {
           label: "Accuracy Rate",
@@ -268,7 +268,7 @@ const Projects = () => {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "50px" }
+      { threshold: 0.1, rootMargin: "50px" },
     );
 
     const cards = document.querySelectorAll(".project-card");
@@ -310,7 +310,7 @@ const Projects = () => {
       <div className="section-container">
         <h2 className="section-title">Featured Projects</h2>
         <p className="section-subtitle">
-          Innovative solutions combining AI, computer vision, and full-stack
+          Solutions combining AI, computer vision, and full-stack
           development to solve real-world problems
         </p>
 
@@ -678,13 +678,13 @@ const ProjectModal = ({ project, onClose }) => {
 
   const nextImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === project.images.length - 1 ? 0 : prev + 1
+      prev === project.images.length - 1 ? 0 : prev + 1,
     );
   };
 
   const prevImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === 0 ? project.images.length - 1 : prev - 1
+      prev === 0 ? project.images.length - 1 : prev - 1,
     );
   };
 
