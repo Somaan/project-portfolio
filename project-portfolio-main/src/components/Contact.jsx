@@ -1,184 +1,131 @@
-// Contact section: about-me card, CV download and contact links
+// Contact section: contact links and email
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowRight,
+  faDownload,
   faEnvelope,
   faMapMarkerAlt,
-  faDownload,
   faPaperPlane,
-  faGraduationCap,
-  faTrophy,
-  faUsers,
-  faExternalLinkAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { CV_FILENAME, CV_PATH, openExternal } from "../utils/links";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../utils/links";
+
+const CONTACT_INFO = [
+  {
+    id: "email",
+    icon: faEnvelope,
+    title: "Email",
+    value: EMAIL,
+    link: `mailto:${EMAIL}`,
+    description: "Best way to reach me",
+  },
+  {
+    id: "github",
+    icon: faGithub,
+    title: "GitHub",
+    value: "github.com/Somaan",
+    link: GITHUB_URL,
+    external: true,
+    description: "View my code repositories",
+  },
+  {
+    id: "linkedin",
+    icon: faLinkedin,
+    title: "LinkedIn",
+    value: "Connect with me",
+    link: LINKEDIN_URL,
+    external: true,
+    description: "Professional networking",
+  },
+  {
+    id: "location",
+    icon: faMapMarkerAlt,
+    title: "Location",
+    value: "London, United Kingdom",
+    link: null,
+    description: "Available for remote & on-site work",
+  },
+];
 
 const Contact = () => {
-  // Contact information
-  const contactInfo = [
-    {
-      id: "email",
-      icon: faEnvelope,
-      title: "Email",
-      value: "somaanm02@gmail.com",
-      link: "mailto:somaanm02@gmail.com",
-      type: "email",
-      description: "Best way to reach me",
-      showExternalIcon: true,
-    },
-    {
-      id: "github",
-      icon: faGithub,
-      title: "GitHub",
-      value: "github.com/Somaan",
-      link: "https://github.com/Somaan",
-      type: "external",
-      description: "View my code repositories",
-      showExternalIcon: true,
-    },
-    {
-      id: "linkedin",
-      icon: faLinkedin,
-      title: "LinkedIn",
-      value: "Connect with me",
-      link: "https://linkedin.com/in/somaan-mirza",
-      type: "external",
-      description: "Professional networking",
-      showExternalIcon: true,
-    },
-    {
-      id: "location",
-      icon: faMapMarkerAlt,
-      title: "Location",
-      value: "London, United Kingdom",
-      link: null,
-      type: "info",
-      description: "Available for remote & on-site work",
-      showExternalIcon: false,
-    },
-  ];
-
-  // Handle contact link clicks
-  const handleContactClick = (link, type) => {
-    if (link) {
-      if (type === "external") {
-        openExternal(link);
-      } else {
-        window.location.href = link;
-      }
-    }
-  };
-
   return (
-    <section id="contact" className="contact-section section">
-      <div className="section-container">
-        <h2 className="section-title">Let's Connect</h2>
-        <p className="section-subtitle">
-          Ready to collaborate on innovative projects or discuss exciting
-          opportunities
-        </p>
-
-        <div className="contact-content">
-          {/* About Me */}
-          <div className="bio-section">
-            <div className="bio-card glass-card">
-              <h3>About Me</h3>
-              <p>
-                Currently pursuing a Masters in Computer Science, I'm passionate
-                about software development and systems engineering, with
-                expertise in building secure, scalable systems that solve
-                real-world problems. I believe in creating technology that makes
-                a measurable impact. When I'm not coding, you'll find me on the
-                squash court or playing guitar. Squash has taught me strategy
-                and quick decision-making. As Squash Club President, I've
-                developed leadership and team-building skills that enhance my
-                collaborative approach to software development.
-              </p>
-
-              <div className="bio-highlights">
-                <div className="highlight-item">
-                  <FontAwesomeIcon icon={faGraduationCap} />
-                  <span>MSc Advanced Computer Science (In Progress)</span>
-                </div>
-                <div className="highlight-item">
-                  <FontAwesomeIcon icon={faTrophy} />
-                  <span>BSc Business Information Systems (2:1)</span>
-                </div>
-                <div className="highlight-item">
-                  <FontAwesomeIcon icon={faUsers} />
-                  <span>UEA Squash President</span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="bio-actions">
-                <button
-                  className="btn-primary"
-                  onClick={() =>
-                    handleContactClick("mailto:somaanm02@gmail.com", "email")
-                  }
-                >
-                  <FontAwesomeIcon icon={faPaperPlane} />
-                  Get In Touch
-                </button>
-
-                <a className="btn-secondary" href={CV_PATH} download={CV_FILENAME}>
-                  <FontAwesomeIcon icon={faDownload} />
-                  Download CV
-                </a>
-              </div>
-            </div>
+    <section id="contact" className="section section-alt">
+      <div className="container">
+        <header className="section-header" data-reveal>
+          <h2 className="section-title">Let's Connect</h2>
+          <p className="section-subtitle">
+            Ready to collaborate on innovative projects or discuss exciting
+            opportunities
+          </p>
+          <div className="contact-actions">
+            <a className="btn btn-primary" href={`mailto:${EMAIL}`}>
+              <FontAwesomeIcon icon={faPaperPlane} />
+              Get In Touch
+            </a>
+            {/* Disabled until an updated CV is added (see utils/links.js) */}
+            <button
+              className="btn btn-secondary"
+              disabled
+              title="Updated CV coming soon"
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              Download CV
+            </button>
           </div>
+        </header>
 
-          {/* Contact Grid */}
-          <div className="contact-grid">
-            {contactInfo.map((contact) => (
-              <ContactCard
-                key={contact.id}
-                contact={contact}
-                onContactClick={handleContactClick}
-              />
-            ))}
-          </div>
-        </div>
+        <ul className="contact-grid">
+          {CONTACT_INFO.map((contact, index) => (
+            <li
+              key={contact.id}
+              data-reveal
+              style={{ "--reveal-delay": `${index * 70}ms` }}
+            >
+              <ContactCard contact={contact} />
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 };
 
-// Individual Contact Card Component
-const ContactCard = ({ contact, onContactClick }) => {
-  const handleClick = () => {
-    onContactClick(contact.link, contact.type);
-  };
+// A single contact card; rendered as a link when the contact has one
+const ContactCard = ({ contact }) => {
+  const content = (
+    <>
+      <span className="contact-card-icon">
+        <FontAwesomeIcon icon={contact.icon} />
+      </span>
+      <span className="contact-card-text">
+        <span className="contact-card-title">{contact.title}</span>
+        <span className="contact-card-value">{contact.value}</span>
+        <span className="contact-card-description">
+          {contact.description}
+        </span>
+      </span>
+      {contact.link && (
+        <FontAwesomeIcon icon={faArrowRight} className="contact-card-arrow" />
+      )}
+    </>
+  );
+
+  if (!contact.link) {
+    return <div className="contact-card">{content}</div>;
+  }
 
   return (
-    <div className="contact-card glass-card">
-      <div className="contact-card-icon">
-        <FontAwesomeIcon icon={contact.icon} />
-      </div>
-
-      <div className="contact-card-content">
-        <h4 className="contact-card-title">{contact.title}</h4>
-        <p className="contact-card-description">{contact.description}</p>
-
-        {contact.link ? (
-          <button
-            className="contact-card-link"
-            onClick={handleClick}
-            aria-label={`Contact via ${contact.title}: ${contact.value}`}
-          >
-            {contact.value}
-            {contact.showExternalIcon && (
-              <FontAwesomeIcon icon={faExternalLinkAlt} />
-            )}
-          </button>
-        ) : (
-          <span className="contact-card-value">{contact.value}</span>
-        )}
-      </div>
-    </div>
+    <a
+      className="contact-card is-link"
+      href={contact.link}
+      {...(contact.external && {
+        target: "_blank",
+        rel: "noopener noreferrer",
+      })}
+    >
+      {content}
+    </a>
   );
 };
 

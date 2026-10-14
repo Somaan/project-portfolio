@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -11,17 +12,22 @@ import {
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { openExternal } from "../utils/links";
 
 // Project details modal with image gallery, lightbox and mobile swipe support
 const ProjectModal = ({ project, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const closeButtonRef = useRef(null);
 
   // Touch handling for swipe gestures
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isSwipeActive, setIsSwipeActive] = useState(false);
+
+  const images = project.images || [];
+  const imageCount = images.length;
+  const currentImage = images[selectedImageIndex];
+  const titleId = `modal-title-${project.id}`;
 
   const openLightbox = (index = selectedImageIndex) => {
     setSelectedImageIndex(index);
@@ -32,8 +38,6 @@ const ProjectModal = ({ project, onClose }) => {
     setLightboxOpen(false);
     setIsSwipeActive(false);
   };
-
-  const imageCount = project.images.length;
 
   const nextImage = () => {
     setSelectedImageIndex((prev) => (prev === imageCount - 1 ? 0 : prev + 1));
@@ -75,78 +79,236 @@ const ProjectModal = ({ project, onClose }) => {
     setIsSwipeActive(false);
   };
 
-  // Keyboard navigation while the lightbox is open
+  // Lock page scroll while open, and return focus to the trigger on close
   useEffect(() => {
-    if (!lightboxOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const previouslyFocused = document.activeElement;
 
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previouslyFocused?.focus?.();
+    };
+  }, []);
+
+  // Escape closes the lightbox first, then the modal; arrows move the lightbox
+  useEffect(() => {
     const handleKeyDown = (e) => {
-      switch (e.key) {
-        case "Escape":
+      if (e.key === "Escape") {
+        if (lightboxOpen) {
           setLightboxOpen(false);
           setIsSwipeActive(false);
-          break;
-        case "ArrowLeft":
-          setSelectedImageIndex((prev) =>
-            prev === 0 ? imageCount - 1 : prev - 1,
-          );
-          break;
-        case "ArrowRight":
-          setSelectedImageIndex((prev) =>
-            prev === imageCount - 1 ? 0 : prev + 1,
-          );
-          break;
-        default:
-          break;
+        } else {
+          onClose();
+        }
+        return;
+      }
+
+      if (!lightboxOpen) return;
+
+      if (e.key === "ArrowLeft") {
+        setSelectedImageIndex((prev) =>
+          prev === 0 ? imageCount - 1 : prev - 1,
+        );
+      } else if (e.key === "ArrowRight") {
+        setSelectedImageIndex((prev) =>
+          prev === imageCount - 1 ? 0 : prev + 1,
+        );
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxOpen, imageCount]);
+  }, [lightboxOpen, imageCount, onClose]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
-        <div className="modal-header">
-          <div className="modal-title-section">
-            <h2 className="modal-title">{project.title}</h2>
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <header className="modal-header">
+          <div>
+            <span className="project-category">{project.category}</span>
+            <h2 id={titleId} className="modal-title">
+              {project.title}
+            </h2>
             <p className="modal-subtitle">{project.subtitle}</p>
-            <div className="modal-meta">
-              <span className="modal-category">{project.category}</span>
-              <span className="modal-period">{project.period}</span>
-            </div>
           </div>
           <button
-            className="modal-close"
+            ref={closeButtonRef}
+            className="icon-button"
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label="Close project details"
           >
             <FontAwesomeIcon icon={faTimes} />
           </button>
+        </header>
+
+        <div className="modal-body">
+          {currentImage && (
+            <div className="gallery">
+              <div className="gallery-main">
+                <button
+                  className="gallery-image-button"
+                  onClick={() => openLightbox(selectedImageIndex)}
+                  aria-label={`Expand image: ${currentImage.alt}`}
+                >
+                  <img
+                    src={currentImage.src}
+                    alt={currentImage.alt}
+                    className="gallery-image"
+                  />
+                  <span className="gallery-expand-hint">
+                    <FontAwesomeIcon icon={faExpandArrowsAlt} />
+                    Click to expand
+                  </span>
+                </button>
+
+                {imageCount > 1 && (
+                  <>
+                    <button
+                      className="gallery-nav gallery-prev"
+                      onClick={prevImage}
+                      aria-label="Previous image"
+                    >
+                      <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+                    <button
+                      className="gallery-nav gallery-next"
+                      onClick={nextImage}
+                      aria-label="Next image"
+                    >
+                      <FontAwesomeIcon icon={faChevronRight} />
+                    </button>
+                  </>
+                )}
+              </div>
+              <p className="gallery-caption">{currentImage.caption}</p>
+
+              {imageCount > 1 && (
+                <div className="gallery-thumbnails">
+                  {images.map((image, index) => (
+                    <button
+                      key={image.src}
+                      className={`thumbnail ${
+                        index === selectedImageIndex ? "is-active" : ""
+                      }`}
+                      onClick={() => setSelectedImageIndex(index)}
+                      aria-label={`Show image ${index + 1}: ${image.alt}`}
+                      aria-current={
+                        index === selectedImageIndex ? "true" : undefined
+                      }
+                    >
+                      <img src={image.src} alt="" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="modal-sections">
+            <section className="modal-section">
+              <h3 className="modal-section-title">
+                <FontAwesomeIcon icon={faTrophy} />
+                Key Achievements
+              </h3>
+              <ul className="detail-list">
+                {project.keyAchievements.map((achievement) => (
+                  <li key={achievement}>{achievement}</li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="modal-section">
+              <h3 className="modal-section-title">
+                <FontAwesomeIcon icon={faCogs} />
+                Technical Implementation
+              </h3>
+              <ul className="detail-list">
+                {project.technicalHighlights.map((highlight) => (
+                  <li key={highlight}>{highlight}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
         </div>
 
-        {/* Enhanced Lightbox with Swipe Support */}
-        {lightboxOpen && (
-          <div className="lightbox-overlay" onClick={closeLightbox}>
+        {(project.githubRepo || project.reportLink || project.liveDemo) && (
+          <footer className="modal-footer">
+            {project.githubRepo && (
+              <a
+                className="btn btn-primary"
+                href={project.githubRepo}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FontAwesomeIcon icon={faGithub} />
+                View on GitHub
+              </a>
+            )}
+            {project.reportLink && (
+              <a
+                className="btn btn-primary"
+                href={project.reportLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FontAwesomeIcon icon={faFileAlt} />
+                View Research Report
+              </a>
+            )}
+            {project.liveDemo && (
+              <a
+                className="btn btn-secondary"
+                href={project.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FontAwesomeIcon icon={faExternalLinkAlt} />
+                Live Demo
+              </a>
+            )}
+          </footer>
+        )}
+      </div>
+
+      {/* Lightbox renders into <body> so it always covers the full viewport */}
+      {lightboxOpen &&
+        currentImage &&
+        createPortal(
+          <div
+            className="lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label={currentImage.alt}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeLightbox();
+            }}
+          >
             <div
-              className="lightbox-container"
+              className="lightbox-inner"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Close button */}
               <button
-                className="lightbox-close"
+                className="icon-button lightbox-close"
                 onClick={closeLightbox}
-                aria-label="Close lightbox"
+                aria-label="Close image"
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
 
-              {/* Navigation arrows */}
-              {project.images.length > 1 && (
+              {imageCount > 1 && (
                 <>
                   <button
                     className="lightbox-nav lightbox-prev"
@@ -165,183 +327,26 @@ const ProjectModal = ({ project, onClose }) => {
                 </>
               )}
 
-              {/* Main lightbox content */}
-              <div className="lightbox-content">
-                <img
-                  src={project.images[selectedImageIndex].src}
-                  alt={project.images[selectedImageIndex].alt}
-                  className="lightbox-image"
-                  draggable={false}
-                />
+              <img
+                src={currentImage.src}
+                alt={currentImage.alt}
+                className="lightbox-image"
+                draggable={false}
+              />
 
-                {/* Caption */}
-                <div className="lightbox-caption">
-                  <h5>{project.images[selectedImageIndex].alt}</h5>
-                  <p>{project.images[selectedImageIndex].caption}</p>
-                </div>
+              <div className="lightbox-caption">
+                <p className="lightbox-caption-title">{currentImage.alt}</p>
+                <p>{currentImage.caption}</p>
+                {imageCount > 1 && (
+                  <p className="lightbox-counter">
+                    {selectedImageIndex + 1} / {imageCount}
+                  </p>
+                )}
               </div>
-
-              {/* Image counter */}
-              {project.images.length > 1 && (
-                <div className="lightbox-counter">
-                  {selectedImageIndex + 1} / {project.images.length}
-                </div>
-              )}
             </div>
-          </div>
+          </div>,
+          document.body,
         )}
-
-        {/* Modal Body */}
-        <div className="modal-body">
-          {/* Image Gallery Section */}
-          {project.images && project.images.length > 0 && (
-            <div className="modal-gallery">
-              <div className="gallery-main">
-                <div
-                  className="main-image-container"
-                  onClick={() => openLightbox(selectedImageIndex)}
-                >
-                  <img
-                    src={project.images[selectedImageIndex].src}
-                    alt={project.images[selectedImageIndex].alt}
-                    className="main-image clickable-image"
-                  />
-
-                  {/* Expand hint overlay */}
-                  <div className="image-expand-overlay">
-                    <div className="expand-hint">
-                      <FontAwesomeIcon icon={faExpandArrowsAlt} />
-                      <span>Click to expand</span>
-                    </div>
-                  </div>
-
-                  {/* Navigation arrows */}
-                  {project.images.length > 1 && (
-                    <>
-                      <button
-                        className="gallery-nav gallery-prev"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          prevImage();
-                        }}
-                        aria-label="Previous image"
-                      >
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                      </button>
-                      <button
-                        className="gallery-nav gallery-next"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          nextImage();
-                        }}
-                        aria-label="Next image"
-                      >
-                        <FontAwesomeIcon icon={faChevronRight} />
-                      </button>
-                    </>
-                  )}
-                </div>
-                <p className="image-caption">
-                  {project.images[selectedImageIndex].caption}
-                </p>
-              </div>
-
-              {project.images.length > 1 && (
-                <div className="gallery-thumbnails">
-                  {project.images.map((image, index) => (
-                    <button
-                      key={index}
-                      className={`thumbnail ${
-                        index === selectedImageIndex ? "active" : ""
-                      }`}
-                      onClick={() => setSelectedImageIndex(index)}
-                    >
-                      <img src={image.src} alt={image.alt} />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Content Sections */}
-          <div className="modal-sections">
-            {/* Key Achievements */}
-            <div className="modal-section">
-              <h3 className="section-title">
-                <FontAwesomeIcon icon={faTrophy} />
-                Key Achievements
-              </h3>
-              <ul className="achievements-list">
-                {project.keyAchievements.map((achievement, index) => (
-                  <li key={index}>{achievement}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Technical Implementation */}
-            <div className="modal-section">
-              <h3 className="section-title">
-                <FontAwesomeIcon icon={faCogs} />
-                Technical Implementation
-              </h3>
-              <ul className="technical-list">
-                {project.technicalHighlights.map((highlight, index) => (
-                  <li key={index}>{highlight}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Modal Footer */}
-        <div className="modal-footer">
-          <div className="modal-actions">
-            {project.githubRepo && (
-              <button
-                className="btn-github"
-                onClick={() => openExternal(project.githubRepo)}
-              >
-                <FontAwesomeIcon icon={faGithub} />
-                View on GitHub
-              </button>
-            )}
-            {project.reportLink && (
-              <button
-                className="btn-report"
-                onClick={() => openExternal(project.reportLink)}
-                style={{
-                  background:
-                    "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)",
-                  color: "white",
-                  padding: "12px 24px",
-                  border: "none",
-                  borderRadius: "8px",
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <FontAwesomeIcon icon={faFileAlt} />
-                View Research Report
-              </button>
-            )}
-            {project.liveDemo && (
-              <button
-                className="btn-demo"
-                onClick={() => openExternal(project.liveDemo)}
-              >
-                <FontAwesomeIcon icon={faExternalLinkAlt} />
-                Live Demo
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

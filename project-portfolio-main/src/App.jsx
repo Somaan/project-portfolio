@@ -1,32 +1,40 @@
-// Main application component: navigation, hero, projects and contact sections
+// Main application component: navigation and page sections
 
 import { useState, useEffect } from "react";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
+import About from "./components/About";
 import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import useReveal from "./hooks/useReveal";
+
+const SECTIONS = ["home", "projects", "about", "contact"];
 
 const App = () => {
-  // State for tracking which section is currently active (for navigation highlighting)
+  // Section currently in view (for navigation highlighting)
   const [activeSection, setActiveSection] = useState("home");
+
+  // Whether the page has scrolled past the top (nav gets a border)
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // State for mobile menu toggle
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Effect to handle scroll detection and update active section
+  useReveal();
+
+  // Update the active section and nav style on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "projects", "contact"];
-      const scrollPosition = window.scrollY + 100; // Offset for navbar height
+      const scrollPosition = window.scrollY + 120; // Offset for navbar height
+      setIsScrolled(window.scrollY > 8);
 
-      // Check which section is currently in view
-      sections.forEach((section) => {
+      SECTIONS.forEach((section) => {
         const element = document.getElementById(section);
         if (element) {
           const top = element.offsetTop;
           const bottom = top + element.offsetHeight;
 
-          // Update active section if this section is in view
           if (scrollPosition >= top && scrollPosition < bottom) {
             setActiveSection(section);
           }
@@ -34,37 +42,38 @@ const App = () => {
       });
     };
 
-    // Add scroll listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup listener on component unmount
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to handle smooth scrolling to sections
+  // Smooth scroll to a section and close the mobile menu
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    // Close mobile menu after navigation
     setIsMenuOpen(false);
   };
 
   return (
     <div className="app">
-      {/* Navigation component with props for state management */}
       <Navigation
         activeSection={activeSection}
         scrollToSection={scrollToSection}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isScrolled={isScrolled}
       />
 
-      {/* Main content sections - focused on projects */}
-      <Hero scrollToSection={scrollToSection} />
-      <Projects />
-      <Contact />
+      <main>
+        <Hero scrollToSection={scrollToSection} />
+        <Projects />
+        <About />
+        <Contact />
+      </main>
+
+      <Footer />
     </div>
   );
 };
