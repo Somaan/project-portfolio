@@ -1,7 +1,5 @@
-// components/Contact.js - Updated with proper FontAwesome icons
-// Professional contact section with working FontAwesome icon integration
+// Contact section: about-me card, CV download and contact links
 
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -14,9 +12,10 @@ import {
   faExternalLinkAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { CV_FILENAME, CV_PATH, openExternal } from "../utils/links";
 
 const Contact = () => {
-  // Contact information - updated with proper FontAwesome icon references
+  // Contact information
   const contactInfo = [
     {
       id: "email",
@@ -64,20 +63,11 @@ const Contact = () => {
   const handleContactClick = (link, type) => {
     if (link) {
       if (type === "external") {
-        window.open(link, "_blank", "noopener noreferrer");
+        openExternal(link);
       } else {
         window.location.href = link;
       }
     }
-  };
-
-  // Download CV function
-  const handleDownloadCV = () => {
-    // Create a link element and trigger download
-    const link = document.createElement("a");
-    link.href = "/documents/Somaan_Mirza_CV.pdf";
-    link.download = "Somaan_Mirza_CV.pdf";
-    link.click();
   };
 
   return (
@@ -90,7 +80,7 @@ const Contact = () => {
         </p>
 
         <div className="contact-content">
-          {/* About Me Section - Now First */}
+          {/* About Me */}
           <div className="bio-section">
             <div className="bio-card glass-card">
               <h3>About Me</h3>
@@ -133,15 +123,15 @@ const Contact = () => {
                   Get In Touch
                 </button>
 
-                <button className="btn-secondary" onClick={handleDownloadCV}>
+                <a className="btn-secondary" href={CV_PATH} download={CV_FILENAME}>
                   <FontAwesomeIcon icon={faDownload} />
                   Download CV
-                </button>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Contact Grid - Now Second */}
+          {/* Contact Grid */}
           <div className="contact-grid">
             {contactInfo.map((contact) => (
               <ContactCard

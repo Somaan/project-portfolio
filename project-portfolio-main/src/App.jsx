@@ -1,40 +1,10 @@
-// App.js - Main Application Component
-// Modern project showcase portfolio with dark/light mode support
+// Main application component: navigation, hero, projects and contact sections
 
-import React, { useState, useEffect } from "react";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCalendarAlt,
-  faArrowRight,
-  faExternalLinkAlt,
-  faTimes,
-  faChevronLeft,
-  faChevronRight,
-  faRocket,
-  faTrophy,
-  faCogs,
-  faSearchPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-
-library.add(
-  faCalendarAlt,
-  faArrowRight,
-  faExternalLinkAlt,
-  faTimes,
-  faChevronLeft,
-  faChevronRight,
-  faRocket,
-  faTrophy,
-  faCogs,
-  faGithub,
-  faSearchPlus,
-);
-import Navigation from "./Navigation";
-import Hero from "./Hero";
-import Projects from "./Projects";
-import Contact from "./Contact";
-//import "../index.css";
+import { useState, useEffect } from "react";
+import Navigation from "./components/Navigation";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
 
 const App = () => {
   // State for tracking which section is currently active (for navigation highlighting)

@@ -1,15 +1,8 @@
-import React from "react";
+import { CV_FILENAME, CV_PATH } from "../utils/links";
 
 const Hero = ({ scrollToSection }) => {
   const handleViewProjects = () => {
     scrollToSection("projects");
-  };
-
-  const handleDownloadCV = () => {
-    const link = document.createElement("a");
-    link.href = "/documents/Somaan_Mirza_CV.pdf";
-    link.download = "Somaan_Mirza_CV.pdf";
-    link.click();
   };
 
   return (
@@ -36,13 +29,14 @@ const Hero = ({ scrollToSection }) => {
             >
               View Projects
             </button>
-            <button
+            <a
               className="btn-secondary"
-              onClick={handleDownloadCV}
+              href={CV_PATH}
+              download={CV_FILENAME}
               aria-label="Download my CV"
             >
               Download CV
-            </button>
+            </a>
           </div>
 
           <div className="hero-stats">

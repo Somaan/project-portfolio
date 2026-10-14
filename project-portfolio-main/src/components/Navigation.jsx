@@ -1,7 +1,4 @@
-// components/Navigation.js - Modern Navigation with Dark/Light Mode Toggle
-// Handles navigation with glassmorphism design and theme switching
-
-import React from "react";
+// Fixed top navigation with section links and a mobile menu toggle
 
 const Navigation = ({
   activeSection,
@@ -26,32 +23,18 @@ const Navigation = ({
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Theme toggle functionality
-  const toggleTheme = () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
-
-  // Set initial theme on component mount
-  React.useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
-
-    document.documentElement.setAttribute("data-theme", initialTheme);
-  }, []);
-
   return (
     <nav className="navbar">
       <div className="nav-container">
         {/* Logo/Brand */}
         <div className="nav-logo">
-          <h2 onClick={() => handleNavClick("home")}></h2>
+          <button
+            className="nav-logo-button"
+            onClick={() => handleNavClick("home")}
+            aria-label="Back to top"
+          >
+            Somaan Mirza
+          </button>
         </div>
 
         {/* Navigation Content */}
@@ -72,35 +55,19 @@ const Navigation = ({
               </li>
             ))}
           </ul>
-
-          {/* Theme Toggle Button */}
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle dark/light mode"
-            title="Toggle Theme"
-          >
-            <i className="fas fa-moon" aria-hidden="true"></i>
-          </button>
         </div>
 
         {/* Mobile Menu Toggle (Hamburger) */}
-        <div
+        <button
           className={`nav-toggle ${isMenuOpen ? "active" : ""}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
-          role="button"
-          tabIndex={0}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              toggleMobileMenu();
-            }
-          }}
+          aria-expanded={isMenuOpen}
         >
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
-        </div>
+        </button>
       </div>
     </nav>
   );

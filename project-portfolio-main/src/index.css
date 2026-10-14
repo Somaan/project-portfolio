@@ -132,6 +132,8 @@ body {
   transition: all 0.2s ease;
   border: none;
   font-family: inherit;
+  display: inline-block;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -213,7 +215,9 @@ body {
   justify-content: space-between;
 }
 
-.nav-logo h2 {
+.nav-logo-button {
+  border: none;
+  font-family: inherit;
   font-size: 1.25rem;
   font-weight: 700;
   background: var(--gradient);
@@ -255,6 +259,8 @@ body {
   gap: 5px;
   cursor: pointer;
   padding: 4px;
+  background: none;
+  border: none;
 }
 
 .bar {
