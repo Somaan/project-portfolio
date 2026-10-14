@@ -14,7 +14,7 @@ const Hero = ({ scrollToSection }) => {
             data-reveal
             style={{ "--reveal-delay": "80ms" }}
           >
-            Systems Engineer
+            Incoming Systems Engineer
           </p>
 
           <p
@@ -22,12 +22,12 @@ const Hero = ({ scrollToSection }) => {
             data-reveal
             style={{ "--reveal-delay": "160ms" }}
           >
-            An MSc Advanced Computer Science graduate from Queen Mary University
-            of London, specialising in Data & Software Engineering. In my
-            portfolio, you'll find projects that demonstrate my ability to build
-            full-stack applications with AI integrated features, computer vision
-            systems, and machine learning solutions. My MSc research focused on
-            deep learning tools for medical diagnostics.
+            MSc Advanced Computer Science graduate from Queen Mary University of
+            London, specialising in Data & Software Engineering. Throughout
+            academia, I have built software across the stack, from full-stack
+            web platforms to machine learning and probabilistic models, with my
+            MSc research focused on making deep learning explainable for ECG
+            arrhythmia diagnosis.
           </p>
 
           <div

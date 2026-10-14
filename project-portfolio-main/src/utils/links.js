@@ -5,7 +5,7 @@ export const CV_FILENAME = "Somaan_Mirza_CV.pdf";
 
 export const EMAIL = "somaanm02@gmail.com";
 export const GITHUB_URL = "https://github.com/Somaan";
-export const LINKEDIN_URL = "https://linkedin.com/in/somaan-mirza";
+export const LINKEDIN_URL = "https://www.linkedin.com/in/somaan-mirza";
 
 // Open a URL in a new tab without giving it access to this window.
 export const openExternal = (url) => {

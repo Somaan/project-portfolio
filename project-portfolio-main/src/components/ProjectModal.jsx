@@ -13,6 +13,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
+// Footer action button; rendered disabled when the project has no URL yet
+const FooterLink = ({ url, icon, children }) => {
+  if (!url) {
+    return (
+      <button className="btn btn-secondary" disabled title="Coming soon">
+        <FontAwesomeIcon icon={icon} />
+        {children}
+      </button>
+    );
+  }
+
+  return (
+    <a
+      className="btn btn-primary"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <FontAwesomeIcon icon={icon} />
+      {children}
+    </a>
+  );
+};
+
 // Project details modal with image gallery, lightbox and mobile swipe support
 const ProjectModal = ({ project, onClose }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -134,7 +158,12 @@ const ProjectModal = ({ project, onClose }) => {
       >
         <header className="modal-header">
           <div>
-            <span className="project-category">{project.category}</span>
+            <div className="project-tags">
+              <span className="project-category">{project.category}</span>
+              {project.label && (
+                <strong className="project-label">{project.label}</strong>
+              )}
+            </div>
             <h2 id={titleId} className="modal-title">
               {project.title}
             </h2>
@@ -240,43 +269,26 @@ const ProjectModal = ({ project, onClose }) => {
           </div>
         </div>
 
-        {(project.githubRepo || project.reportLink || project.liveDemo) && (
-          <footer className="modal-footer">
-            {project.githubRepo && (
-              <a
-                className="btn btn-primary"
-                href={project.githubRepo}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faGithub} />
-                View on GitHub
-              </a>
-            )}
-            {project.reportLink && (
-              <a
-                className="btn btn-primary"
-                href={project.reportLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faFileAlt} />
-                View Research Report
-              </a>
-            )}
-            {project.liveDemo && (
-              <a
-                className="btn btn-secondary"
-                href={project.liveDemo}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FontAwesomeIcon icon={faExternalLinkAlt} />
-                Live Demo
-              </a>
-            )}
-          </footer>
-        )}
+        {/* Code and report are always offered, disabled until a URL exists */}
+        <footer className="modal-footer">
+          <FooterLink url={project.githubRepo} icon={faGithub}>
+            View Code
+          </FooterLink>
+          <FooterLink url={project.reportLink} icon={faFileAlt}>
+            View Research Report
+          </FooterLink>
+          {project.liveDemo && (
+            <a
+              className="btn btn-secondary"
+              href={project.liveDemo}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FontAwesomeIcon icon={faExternalLinkAlt} />
+              Live Demo
+            </a>
+          )}
+        </footer>
       </div>
 
       {/* Lightbox renders into <body> so it always covers the full viewport */}

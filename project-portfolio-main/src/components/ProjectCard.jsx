@@ -6,6 +6,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
+// Code and report links are always shown so every card has the same
+// actions; until a URL is added in data/projects.js the link is disabled.
+const ProjectLink = ({ url, icon, children }) => {
+  if (!url) {
+    return (
+      <span
+        className="text-link is-disabled"
+        aria-disabled="true"
+        title="Coming soon"
+      >
+        <FontAwesomeIcon icon={icon} />
+        {children}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      className="text-link"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <FontAwesomeIcon icon={icon} />
+      {children}
+    </a>
+  );
+};
+
 // Project card shown in the Projects grid
 const ProjectCard = ({ project, onOpenModal, revealDelay }) => {
   return (
@@ -15,7 +44,12 @@ const ProjectCard = ({ project, onOpenModal, revealDelay }) => {
       style={{ "--reveal-delay": `${revealDelay}ms` }}
     >
       <header className="project-header">
-        <span className="project-category">{project.category}</span>
+        <div className="project-tags">
+          <span className="project-category">{project.category}</span>
+          {project.label && (
+            <strong className="project-label">{project.label}</strong>
+          )}
+        </div>
         <h3 className="project-title">{project.title}</h3>
         <p className="project-subtitle">{project.subtitle}</p>
       </header>
@@ -51,28 +85,12 @@ const ProjectCard = ({ project, onOpenModal, revealDelay }) => {
         </button>
 
         <div className="project-links">
-          {project.githubRepo && (
-            <a
-              className="text-link"
-              href={project.githubRepo}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FontAwesomeIcon icon={faGithub} />
-              View Code
-            </a>
-          )}
-          {project.reportLink && (
-            <a
-              className="text-link"
-              href={project.reportLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FontAwesomeIcon icon={faFileAlt} />
-              View Research Report
-            </a>
-          )}
+          <ProjectLink url={project.githubRepo} icon={faGithub}>
+            View Code
+          </ProjectLink>
+          <ProjectLink url={project.reportLink} icon={faFileAlt}>
+            View Research Report
+          </ProjectLink>
           {project.liveDemo && (
             <a
               className="text-link"

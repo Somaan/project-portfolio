@@ -15,8 +15,8 @@ const Projects = () => {
         <header className="section-header" data-reveal>
           <h2 className="section-title">Featured Projects</h2>
           <p className="section-subtitle">
-            Solutions combining AI, computer vision, and full-stack development
-            to solve real-world problems
+            From full-stack platforms to deep learning research and
+            probabilistic modelling
           </p>
         </header>
 

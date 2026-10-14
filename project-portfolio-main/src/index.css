@@ -214,6 +214,15 @@ ul {
   color: var(--accent);
 }
 
+.text-link.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.text-link.is-disabled:hover {
+  color: var(--text-muted);
+}
+
 .icon-button {
   display: inline-flex;
   align-items: center;
@@ -522,6 +531,24 @@ ul {
   color: var(--accent);
 }
 
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* Highlights thesis projects, e.g. "MSc Thesis" */
+.project-label {
+  padding: 2px var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
 .project-title {
   margin-top: var(--space-3);
   font-family: var(--font-display);
@@ -538,7 +565,7 @@ ul {
 
 .project-metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -567,24 +594,33 @@ ul {
 }
 
 .metric-description {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--text-subtle);
 }
 
+/* Phones: keep the three metrics side by side but compact, dropping the
+   longer descriptions so each card stays a readable length */
 @media (max-width: 479px) {
-  .project-metrics {
-    grid-template-columns: 1fr;
-  }
-
-  .metric,
-  .metric + .metric {
-    padding: var(--space-3) 0;
-    border-left: none;
+  .metric {
+    padding: var(--space-3) var(--space-2) var(--space-3) 0;
   }
 
   .metric + .metric {
-    border-top: 1px solid var(--border);
+    padding-left: var(--space-2);
+  }
+
+  .metric-value {
+    font-size: 1.375rem;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .metric-description {
+    display: none;
   }
 }
 
@@ -601,7 +637,7 @@ ul {
 .tech-tag {
   padding: var(--space-1) var(--space-3);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -642,14 +678,39 @@ ul {
   animation: fade-in 0.2s ease;
 }
 
+/* Phones and tablets: a full-screen sheet where everything scrolls together
+   so the header doesn't eat reading space; the action footer stays pinned */
 .modal {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   background: var(--bg);
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   animation: sheet-in 0.3s var(--ease);
+}
+
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+}
+
+/* Keep the close button reachable while the sheet scrolls */
+@media (max-width: 899px) {
+  .modal .modal-header {
+    padding-right: calc(44px + var(--space-8));
+  }
+
+  .modal-header .icon-button {
+    position: fixed;
+    top: var(--space-3);
+    right: var(--space-3);
+    z-index: 1;
+    background: var(--surface);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+  }
 }
 
 @media (min-width: 900px) {
@@ -659,6 +720,9 @@ ul {
   }
 
   .modal {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     max-width: 920px;
     height: auto;
     max-height: calc(100vh - 4rem);
@@ -692,10 +756,15 @@ ul {
 }
 
 .modal-body {
-  flex: 1;
-  overflow-y: auto;
-  overscroll-behavior: contain;
   padding: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 }
 
 .modal-footer {
@@ -718,8 +787,24 @@ ul {
 }
 
 @media (max-width: 479px) {
+  .modal-footer {
+    flex-wrap: nowrap;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+  }
+
   .modal-footer .btn {
-    flex: 1 1 100%;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.875rem;
+    line-height: 1.25;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-size: 1.875rem;
   }
 }
 
@@ -799,7 +884,7 @@ ul {
 
 .gallery-caption {
   margin-top: var(--space-3);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--text-subtle);
 }
 
