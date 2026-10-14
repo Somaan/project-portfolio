@@ -1,12 +1,25 @@
-# React + Vite
+# Somaan Mirza: Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio built with React and Vite.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev      # start the dev server
+npm run lint     # run ESLint
+npm run build    # production build to dist/
+npm run preview  # serve the production build locally
+```
 
-## Expanding the ESLint configuration
+## Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `src/App.jsx`: page layout and scroll-based nav highlighting
+- `src/components/`: Navigation, Hero, Projects (grid, card, modal) and Contact sections
+- `src/data/projects.js`: project content; add new projects here
+- `src/utils/links.js`: CV path and external-link helper
+- `public/images/`, `public/documents/`: project screenshots, CV and report PDFs
+
+## Deployment
+
+Deployed on Vercel from the `main` branch. This folder (`project-portfolio-main/`) is the Vercel project root.
